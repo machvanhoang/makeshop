@@ -61,6 +61,6 @@ Route::group(
         'as' => 'import.'
     ],
     function () {
-        Route::get('/', [ImportController::class, 'index'])->name('index');
+        Route::match(['get', 'post'], '/', [ImportController::class, 'index'])->name('index');
     }
 );

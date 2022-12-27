@@ -20,7 +20,7 @@ class SettingSeeder extends Seeder
             'process' => 'search',
             'access_token' => null,
             'response_format' => 'xml',
-            'total_product' => 10070
+            'total_product' => 10072
         ];
         Settings::create($setting);
     }

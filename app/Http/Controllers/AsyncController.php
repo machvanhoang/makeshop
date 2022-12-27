@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Constant\Constant;
+use App\Models\ProductCategories;
 use App\Models\Settings;
 use App\Models\Products;
 use App\Models\LogHistory;
@@ -152,9 +153,21 @@ class AsyncController extends Controller
         $data['is_diplay_stock'] = !empty($item->is_diplay_stock) ? $item->is_diplay_stock : 0;
         $data['zoom_image_url'] = $item->zoom_image_url;
         $data['price_tax'] = round($item->price * (1 + ((float)$item->consumption_tax_rate / 100)));
+        $basic_category = !empty($item->basic_category) ? $item->basic_category->category_code : null;
         $product = Products::create($data);
-        if ($product->is_display == 'N') {
-            $product->delete();
+        if (!empty($product)) {
+            if (!is_null($basic_category)) {
+                $basicCategory = ProductCategories::where('category_code', $basic_category)->first();
+                if (empty($basicCategory)) {
+                    ProductCategories::create([
+                        'category_code' => $basic_category,
+                        'product_id'    => $product->product_id
+                    ]);
+                }
+            }
+            if ($product->is_display == 'N') {
+                $product->delete();
+            }
         }
     }
     private function updateProduct($product, $item)

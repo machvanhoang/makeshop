@@ -14,7 +14,7 @@
                 <div class="card">
                     <div class="card-header">1. 製品 #Makeshop でカテゴリをインポート</div>
                     <div class="card-body">
-                        <form action="{{ route('async.total_product') }}" role="form" method="POST">
+                        <form action="{{ route('import.index') }}" role="form" method="POST" enctype="multipart/form-data">
                             @csrf
                             <div class="mb-3">
                                 <div class="row">
@@ -22,7 +22,7 @@
                                         <label for="url_parse" class="form-label">ファイル エクセル</label>
                                     </div>
                                     <div class="col-md-8">
-                                        <input type="file" accept=".csv" name="file_excel" value=""
+                                        <input type="file" name="file_excel" value=""
                                             class="form-control" id="file_excel">
                                     </div>
                                 </div>
