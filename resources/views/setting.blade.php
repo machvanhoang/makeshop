@@ -5,19 +5,19 @@
         <div class="row justify-content-center">
             <div class="col-md-10">
                 <div class="card">
-                    <div class="card-header">1. Instructions to get the
+                    <div class="card-header">1. 入手手順
                         <span class="text-info bold">
-                            URL PARSE
+                            URL解析
                         </span> #Makeshop
                     </div>
                     <div class="card-body">
                         <ol>
                             <li>
-                                Video tutorial to get Makeshop's PARSE URL to sync data <br />
+                                Makeshop の PARSE URL を取得してデータを同期するためのビデオ チュートリアル <br />
                                 <div class="block-infomation mb-2 mt-2">
                                     <div class="block-body">
                                         <span>ID: AKI1</span> <br />
-                                        <span>Password: ronro3150</span>
+                                        <span>パスワード: ronro3150</span>
                                     </div>
                                 </div>
                                 <a href="https://www.makeshop.jp/main/reseller/login/"
@@ -25,7 +25,7 @@
                                 <a href="https://apidoc.makeshop.jp/product_search_sample/"
                                     target="blank">https://apidoc.makeshop.jp/product_search_sample/</a> <br />
                                 <a class="btn btn-warning mt-3" target="blank"
-                                    href="{{ asset('/video/support_token.mp4') }}">Watching video</a>
+                                    href="{{ asset('/video/support_token.mp4') }}">ビデオを見る</a>
                             </li>
                         </ol>
                     </div>
@@ -40,7 +40,7 @@
                     </div>
                 @endif
                 <div class="card">
-                    <div class="card-header">2. Generate ACCESS_TOKEN #Makeshop</div>
+                    <div class="card-header">2. アクセストークンを生成 #Makeshop</div>
                     <div class="card-body">
                         <form action="{{ route('settings.parse_access_token') }}" role="form" method="POST">
                             @csrf
@@ -48,11 +48,16 @@
                             <div class="mb-3">
                                 <div class="row">
                                     <div class="col-md-3">
-                                        <label for="url_parse" class="form-label">URL PARSE</label>
+                                        <label for="url_parse" class="form-label">URL解析</label>
                                     </div>
                                     <div class="col-md-8">
                                         <input type="text" name="url_parse" value="" class="form-control"
                                             id="url_parse">
+                                        @if (session('_alert_errors_token'))
+                                            <small class="text-danger">
+                                                {{ session('_alert_errors_token') }}
+                                            </small>
+                                        @endif
                                     </div>
                                 </div>
                             </div>
@@ -64,7 +69,7 @@
                                             d="M11.534 7h3.932a.25.25 0 0 1 .192.41l-1.966 2.36a.25.25 0 0 1-.384 0l-1.966-2.36a.25.25 0 0 1 .192-.41zm-11 2h3.932a.25.25 0 0 0 .192-.41L2.692 6.23a.25.25 0 0 0-.384 0L.342 8.59A.25.25 0 0 0 .534 9z" />
                                         <path fill-rule="evenodd"
                                             d="M8 3c-1.552 0-2.94.707-3.857 1.818a.5.5 0 1 1-.771-.636A6.002 6.002 0 0 1 13.917 7H12.9A5.002 5.002 0 0 0 8 3zM3.1 9a5.002 5.002 0 0 0 8.757 2.182.5.5 0 1 1 .771.636A6.002 6.002 0 0 1 2.083 9H3.1z" />
-                                    </svg> &nbsp; GET TOKEN
+                                    </svg> &nbsp; トークンを取得
                                 </span>
                             </button>
                         </form>
@@ -80,7 +85,7 @@
                     </div>
                 @endif
                 <div class="card">
-                    <div class="card-header">3. Setting data on #Makeshop</div>
+                    <div class="card-header">3. #Makeshop の設定データ</div>
                     <div class="card-body">
                         <form action="{{ route('settings.update') }}" role="form" method="POST">
                             @csrf
@@ -88,7 +93,7 @@
                             <div class="mb-3">
                                 <div class="row">
                                     <div class="col-md-3">
-                                        <label for="shop_id" class="form-label">Shop ID</label>
+                                        <label for="shop_id" class="form-label">ショップID</label>
                                     </div>
                                     <div class="col-md-8">
                                         <input type="number" name="shop_id" value="{{ $setting->shop_id }}"
@@ -109,12 +114,11 @@
                                         </button>
                                     </div>
                                 </div>
-                                <small class="d-none">We'll never share your email with anyone else.</small>
                             </div>
                             <div class="mb-3">
                                 <div class="row">
                                     <div class="col-md-3">
-                                        <label for="auth_code" class="form-label">Auth code</label>
+                                        <label for="auth_code" class="form-label">認証コード</label>
                                     </div>
                                     <div class="col-md-8">
                                         <input type="text" name="auth_code" class="form-control" id="auth_code"
@@ -139,7 +143,7 @@
                             <div class="mb-3">
                                 <div class="row">
                                     <div class="col-md-3">
-                                        <label for="access_token" class="form-label">ACCESS TOKEN</label>
+                                        <label for="access_token" class="form-label">アクセストークン</label>
                                     </div>
                                     <div class="col-md-8">
                                         <input type="text" name="access_token" value="{{ $setting->access_token }}"
@@ -151,7 +155,7 @@
                             <div class="mb-3">
                                 <div class="row">
                                     <div class="col-md-3">
-                                        <label for="process" class="form-label">Process</label>
+                                        <label for="process" class="form-label">プロセス</label>
                                     </div>
                                     <div class="col-md-8">
                                         <input type="text" name="process" class="form-control" readonly
@@ -176,7 +180,7 @@
                             <div class="mb-3">
                                 <div class="row">
                                     <div class="col-md-3">
-                                        <label for="response_format" class="form-label">Response format</label>
+                                        <label for="response_format" class="form-label">応答形式</label>
                                     </div>
                                     <div class="col-md-8">
                                         <input type="text" name="response_format" class="form-control" readonly
@@ -206,7 +210,7 @@
                                             d="M11.534 7h3.932a.25.25 0 0 1 .192.41l-1.966 2.36a.25.25 0 0 1-.384 0l-1.966-2.36a.25.25 0 0 1 .192-.41zm-11 2h3.932a.25.25 0 0 0 .192-.41L2.692 6.23a.25.25 0 0 0-.384 0L.342 8.59A.25.25 0 0 0 .534 9z" />
                                         <path fill-rule="evenodd"
                                             d="M8 3c-1.552 0-2.94.707-3.857 1.818a.5.5 0 1 1-.771-.636A6.002 6.002 0 0 1 13.917 7H12.9A5.002 5.002 0 0 0 8 3zM3.1 9a5.002 5.002 0 0 0 8.757 2.182.5.5 0 1 1 .771.636A6.002 6.002 0 0 1 2.083 9H3.1z" />
-                                    </svg> &nbsp; Update
+                                    </svg> &nbsp; アップデート
                                 </span>
                             </button>
                         </form>

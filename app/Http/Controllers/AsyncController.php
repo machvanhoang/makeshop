@@ -38,7 +38,7 @@ class AsyncController extends Controller
             return redirect()->route('home');
         $setting->total_product = $data['total_product'];
         if ($setting->save()) {
-            return redirect()->route('async.index')->with('_alert_total', 'Update Total Product successfully!!!');
+            return redirect()->route('async.index')->with('_alert_total', '総製品を正常に更新!!!');
         } else {
             return redirect()->back()->withInput();
         }
@@ -66,7 +66,7 @@ class AsyncController extends Controller
         $data_checking['time_end'] = Carbon::now();
         $data_checking['type']     = Constant::CHECKING;
         LogHistory::create($data_checking);
-        return redirect()->route('async.index')->with('_alert_checking', 'Checked Data successfully!!!');
+        return redirect()->route('async.index')->with('_alert_checking', 'データのチェックに成功しました!!!');
     }
     private function saveDataProduct($product_list)
     {
@@ -94,7 +94,7 @@ class AsyncController extends Controller
         $data_async['time_end'] = Carbon::now();
         $data_async['type']     = Constant::ASYNC;
         LogHistory::create($data_async);
-        return redirect()->route('async.index')->with('_alert_async', 'Synchronization Data successfully!!!');
+        return redirect()->route('async.index')->with('_alert_async', 'データのチェックに成功しました!!!');
     }
     public function async_single(Request $request)
     {
@@ -123,9 +123,9 @@ class AsyncController extends Controller
                     } else {
                         $this->updateProduct($product, $item);
                     }
-                    return redirect()->route('async.index')->with('_alert_async', 'Synchronization single product successfully !!!');
+                    return redirect()->route('async.index')->with('_alert_async', '単一製品の同期に成功しました !!!');
                 }
-                return redirect()->route('async.index')->with('_alert_async', 'Synchronization Data successfully!!!');
+                return redirect()->route('async.index')->with('_alert_async', 'データの同期に成功しました!!!');
             } else {
             }
         } catch (\Throwable $th) {
@@ -151,6 +151,7 @@ class AsyncController extends Controller
         $data['stock'] = !empty($item->stock) ? (int)$item->stock : 0;
         $data['is_diplay_stock'] = !empty($item->is_diplay_stock) ? $item->is_diplay_stock : 0;
         $data['zoom_image_url'] = $item->zoom_image_url;
+        $data['price_tax'] = round($item->price * (1 + ((float)$item->consumption_tax_rate / 100)));
         $product = Products::create($data);
         if ($product->is_display == 'N') {
             $product->delete();
@@ -174,6 +175,7 @@ class AsyncController extends Controller
         $product->stock = !empty($item->stock) ? (int)$item->stock : 0;
         $product->is_diplay_stock = !empty($item->is_diplay_stock) ? $item->is_diplay_stock : 0;
         $product->zoom_image_url = $item->zoom_image_url;
+        $product->price_tax = round($product->price * (1 + ((float)$product->consumption_tax_rate / 100)));
         $product->save();
         if ($product->is_display == 'N') {
             $product->delete();

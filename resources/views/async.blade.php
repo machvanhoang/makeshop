@@ -12,7 +12,7 @@
                     </div>
                 @endif
                 <div class="card">
-                    <div class="card-header">1. Total number of products of #Makeshop</div>
+                    <div class="card-header">1. #Makeshop の商品総数</div>
                     <div class="card-body">
                         <form action="{{ route('async.total_product') }}" role="form" method="POST">
                             @csrf
@@ -20,7 +20,7 @@
                             <div class="mb-3">
                                 <div class="row">
                                     <div class="col-md-3">
-                                        <label for="url_parse" class="form-label">Total Product</label>
+                                        <label for="url_parse" class="form-label">総製品</label>
                                     </div>
                                     <div class="col-md-8">
                                         <input type="number" name="total_product"
@@ -41,7 +41,7 @@
                                                         d="M11.534 7h3.932a.25.25 0 0 1 .192.41l-1.966 2.36a.25.25 0 0 1-.384 0l-1.966-2.36a.25.25 0 0 1 .192-.41zm-11 2h3.932a.25.25 0 0 0 .192-.41L2.692 6.23a.25.25 0 0 0-.384 0L.342 8.59A.25.25 0 0 0 .534 9z" />
                                                     <path fill-rule="evenodd"
                                                         d="M8 3c-1.552 0-2.94.707-3.857 1.818a.5.5 0 1 1-.771-.636A6.002 6.002 0 0 1 13.917 7H12.9A5.002 5.002 0 0 0 8 3zM3.1 9a5.002 5.002 0 0 0 8.757 2.182.5.5 0 1 1 .771.636A6.002 6.002 0 0 1 2.083 9H3.1z" />
-                                                </svg> &nbsp; Update Total Product
+                                                </svg> &nbsp; 総製品の更新
                                             </span>
                                         </button>
                                     </div>
@@ -60,14 +60,14 @@
                     </div>
                 @endif
                 <div class="card">
-                    <div class="card-header">2. Check data from #Makeshop</div>
+                    <div class="card-header">2. #Makeshop のデータをチェック</div>
                     <div class="card-body">
                         <form action="{{ route('async.checking') }}" role="form" method="POST">
                             @csrf
                             <div class="mb-3">
                                 <div class="row">
                                     <div class="col-md-3">
-                                        <label for="url_parse" class="form-label">Actions</label>
+                                        <label for="url_parse" class="form-label">行動</label>
                                     </div>
                                     <div class="col-md-8">
                                         <div class="d-flex justify-content-start align-items-center">
@@ -79,13 +79,18 @@
                                                             d="M11.534 7h3.932a.25.25 0 0 1 .192.41l-1.966 2.36a.25.25 0 0 1-.384 0l-1.966-2.36a.25.25 0 0 1 .192-.41zm-11 2h3.932a.25.25 0 0 0 .192-.41L2.692 6.23a.25.25 0 0 0-.384 0L.342 8.59A.25.25 0 0 0 .534 9z" />
                                                         <path fill-rule="evenodd"
                                                             d="M8 3c-1.552 0-2.94.707-3.857 1.818a.5.5 0 1 1-.771-.636A6.002 6.002 0 0 1 13.917 7H12.9A5.002 5.002 0 0 0 8 3zM3.1 9a5.002 5.002 0 0 0 8.757 2.182.5.5 0 1 1 .771.636A6.002 6.002 0 0 1 2.083 9H3.1z" />
-                                                    </svg> &nbsp; Checking Data
+                                                    </svg> &nbsp; データの確認
                                                 </span>
                                             </button>
                                             @if (!empty($last_checking))
                                                 <div class="timer-checking ms-3">
                                                     <span class="time_start">{{ $last_checking->time_start }}</span>
-                                                    <span>-></span>
+                                                    <span class="time-arrow"><svg xmlns="http://www.w3.org/2000/svg"
+                                                            width="16" height="16" fill="currentColor"
+                                                            class="bi bi-arrow-right" viewBox="0 0 16 16">
+                                                            <path fill-rule="evenodd"
+                                                                d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z" />
+                                                        </svg></span>
                                                     <span class="time_end">{{ $last_checking->time_end }}</span>
                                                 </div>
                                             @endif
@@ -107,32 +112,39 @@
                     </div>
                 @endif
                 <div class="card">
-                    <div class="card-header">3. Synchronize all data.</div>
+                    <div class="card-header">3. すべてのデータを同期する.</div>
                     <div class="card-body">
                         <form action="{{ route('async.async') }}" role="form" method="POST">
                             @csrf
                             <div class="mb-3">
                                 <div class="row">
                                     <div class="col-md-3">
-                                        <label for="url_parse" class="form-label">Actions</label>
+                                        <label for="url_parse" class="form-label">行動</label>
                                     </div>
                                     <div class="col-md-8">
                                         <div class="d-flex justify-content-start align-items-center">
                                             <button type="submit" class="btn btn-async btn-warning">
                                                 <span class="d-flex align-items-center justify-content-center">
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                        fill="currentColor" class="bi bi-arrow-repeat" viewBox="0 0 16 16">
+                                                        fill="currentColor" class="bi bi-arrow-repeat"
+                                                        viewBox="0 0 16 16">
                                                         <path
                                                             d="M11.534 7h3.932a.25.25 0 0 1 .192.41l-1.966 2.36a.25.25 0 0 1-.384 0l-1.966-2.36a.25.25 0 0 1 .192-.41zm-11 2h3.932a.25.25 0 0 0 .192-.41L2.692 6.23a.25.25 0 0 0-.384 0L.342 8.59A.25.25 0 0 0 .534 9z" />
                                                         <path fill-rule="evenodd"
                                                             d="M8 3c-1.552 0-2.94.707-3.857 1.818a.5.5 0 1 1-.771-.636A6.002 6.002 0 0 1 13.917 7H12.9A5.002 5.002 0 0 0 8 3zM3.1 9a5.002 5.002 0 0 0 8.757 2.182.5.5 0 1 1 .771.636A6.002 6.002 0 0 1 2.083 9H3.1z" />
-                                                    </svg> &nbsp; Data synchronization
+                                                    </svg> &nbsp; データ同期
                                                 </span>
                                             </button>
                                             @if (!empty($last_async))
                                                 <div class="timer-checking ms-2">
                                                     <span class="time_start">{{ $last_async->time_start }}</span>
-                                                    <span>-></span>
+                                                    <span class="time-arrow">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16"
+                                                            height="16" fill="currentColor" class="bi bi-arrow-right"
+                                                            viewBox="0 0 16 16">
+                                                            <path fill-rule="evenodd"
+                                                                d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z" />
+                                                        </svg></span>
                                                     <span class="time_end">{{ $last_async->time_end }}</span>
                                                 </div>
                                             @endif
@@ -143,15 +155,17 @@
                         </form>
                     </div>
                 </div>
+            </div>
+            <div class="col-md-10 mt-3">
                 <div class="card">
-                    <div class="card-header">3. Synchronize 1 Product.</div>
+                    <div class="card-header">4. 1 つの製品を同期する.</div>
                     <div class="card-body">
                         <form action="{{ route('async.async_single') }}" role="form" method="POST">
                             @csrf
                             <div class="mb-3">
                                 <div class="row">
                                     <div class="col-md-3">
-                                        <label for="url_parse" class="form-label">Actions</label>
+                                        <label for="url_parse" class="form-label">行動</label>
                                     </div>
                                     <div class="col-md-8">
                                         <div class="d-flex justify-content-start align-items-center">
@@ -168,7 +182,7 @@
                                                             d="M11.534 7h3.932a.25.25 0 0 1 .192.41l-1.966 2.36a.25.25 0 0 1-.384 0l-1.966-2.36a.25.25 0 0 1 .192-.41zm-11 2h3.932a.25.25 0 0 0 .192-.41L2.692 6.23a.25.25 0 0 0-.384 0L.342 8.59A.25.25 0 0 0 .534 9z" />
                                                         <path fill-rule="evenodd"
                                                             d="M8 3c-1.552 0-2.94.707-3.857 1.818a.5.5 0 1 1-.771-.636A6.002 6.002 0 0 1 13.917 7H12.9A5.002 5.002 0 0 0 8 3zM3.1 9a5.002 5.002 0 0 0 8.757 2.182.5.5 0 1 1 .771.636A6.002 6.002 0 0 1 2.083 9H3.1z" />
-                                                    </svg> &nbsp; Data synchronization single product
+                                                    </svg> &nbsp; データ同期単品
                                                 </span>
                                             </button>
                                         </div>

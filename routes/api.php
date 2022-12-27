@@ -24,6 +24,6 @@ Route::group(
         'name' => 'product'
     ],
     function () {
-        Route::get('/search', [ProductController::class, 'search'])->name('search');
+        Route::post('/search', [ProductController::class, 'search'])->name('search');
     }
 );

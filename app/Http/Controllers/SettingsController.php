@@ -41,7 +41,7 @@ class SettingsController extends Controller
         $setting->access_token = $data['access_token'];
         $setting->response_format = $data['response_format'];
         if ($setting->save()) {
-            return redirect()->route('settings.index')->with('_alert_data', 'Update Data successfully!!!');
+            return redirect()->route('settings.index')->with('_alert_data', 'データを正常に更新!!!');
         } else {
             return redirect()->back()->withInput();
         }
@@ -53,8 +53,7 @@ class SettingsController extends Controller
             'url_parse' => 'required'
         ]);
         if ($validator->fails()) {
-            dd('failse');
-            return redirect()->back()->withInput();
+            return redirect()->back()->withInput()->with('_alert_errors_token', 'URL フィールドを空にすることはできません!!!');
         }
         $setting = Settings::find(Constant::SETTING_ID);
         if (empty($setting))
@@ -64,10 +63,9 @@ class SettingsController extends Controller
         $access_token = str_replace("https://www.makeshop.jp/api/product/" . $setting->process . "/?shop_id=" . $setting->shop_id . "&access_token=", "", $string_decode);
         $setting->access_token = $access_token;
         if ($setting->save()) {
-            return redirect()->route('settings.index')->with('_alert_token', 'Update Access TOKEN successfully!!!');
+            return redirect()->route('settings.index')->with('_alert_token', 'アクセストークンを正常に更新!!!');
         } else {
             return redirect()->back()->withInput();
         }
     }
-    
 }

@@ -24,6 +24,7 @@ class CreateProductsTable extends Migration
             $table->string('product_page_url', 255)->nullable();
             $table->double('weight', 12, 2)->default(0);
             $table->double('price', 12, 2)->default(0);
+            $table->double('price_tax', 12, 2)->default(0);
             $table->tinyInteger('consumption_tax_rate')->default(0);
             $table->string('jancode', 100)->nullable();
             $table->string('vendor', 100)->nullable();

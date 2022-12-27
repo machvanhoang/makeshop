@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\AsyncController;
-
+use App\Http\Controllers\ImportController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -17,10 +17,14 @@ use App\Http\Controllers\AsyncController;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('index');
 });
 
-Auth::routes();
+Auth::routes([
+    'register' => false,
+    'password.reset' => false,
+    'reset' => false
+]);
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 Route::group(
@@ -47,5 +51,16 @@ Route::group(
         Route::post('/checking', [AsyncController::class, 'checking'])->name('checking');
         Route::post('/async', [AsyncController::class, 'async'])->name('async');
         Route::post('/async_single', [AsyncController::class, 'async_single'])->name('async_single');
+    }
+);
+
+Route::group(
+    [
+        'middleware' => ['auth'],
+        'prefix' => 'import',
+        'as' => 'import.'
+    ],
+    function () {
+        Route::get('/', [ImportController::class, 'index'])->name('index');
     }
 );

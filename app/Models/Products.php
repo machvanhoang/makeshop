@@ -20,6 +20,7 @@ class Products extends Model
         'product_page_url',
         'weight',
         'price',
+        'price_tax',
         'consumption_tax_rate',
         'jancode',
         'vendor',
