@@ -103,7 +103,6 @@
                 </div>
             </div>
             <div class="col-md-10 mt-3">
-
                 @if (session('_alert_async'))
                     <div class="col-sm-12">
                         <div class="alert  alert-success alert-dismissible fade show" role="alert">
@@ -157,6 +156,20 @@
                 </div>
             </div>
             <div class="col-md-10 mt-3">
+                @if (session('_alert_async_single_success'))
+                    <div class="col-sm-12">
+                        <div class="alert  alert-success alert-dismissible fade show" role="alert">
+                            {{ session('_alert_async_single_success') }}
+                        </div>
+                    </div>
+                @endif
+                @if (session('_alert_async_single_error'))
+                    <div class="col-sm-12">
+                        <div class="alert  alert-danger alert-dismissible fade show" role="alert">
+                            {{ session('_alert_async_single_error') }}
+                        </div>
+                    </div>
+                @endif
                 <div class="card">
                     <div class="card-header">4. 1 つの製品を同期する.</div>
                     <div class="card-body">

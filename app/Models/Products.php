@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Models\ProductCategories;
 
 class Products extends Model
 {
@@ -29,4 +30,7 @@ class Products extends Model
         'is_diplay_stock',
         'zoom_image_url',
     ];
+    public function categories(){
+        return $this->hasMany(ProductCategories::class,'product_id','id')->select(['id','category_code']);
+    }
 }

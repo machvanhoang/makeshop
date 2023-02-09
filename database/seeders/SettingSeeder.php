@@ -16,11 +16,11 @@ class SettingSeeder extends Seeder
     {
         $setting = [
             'shop_id' => 4708,
-            'auth_code' => '878fcad78962ae416b08cea651e68b3d',
+            'auth_code' => '819daf05630eed8a7554f2a13a5452e6',
             'process' => 'search',
             'access_token' => null,
             'response_format' => 'xml',
-            'total_product' => 10072
+            'total_product' => 10282
         ];
         Settings::create($setting);
     }

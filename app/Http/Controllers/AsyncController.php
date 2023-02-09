@@ -77,25 +77,29 @@ class AsyncController extends Controller
     }
     public function async(Request $request)
     {
-        $store_path = storage_path('app/public');
-        $array_folder = scandir($store_path);
-        unset($array_folder[0]);
-        unset($array_folder[1]);
-        unset($array_folder[2]);
-        $data_async['time_start'] = Carbon::now();
-        foreach ($array_folder as $key => $item) {
-            $real_path = $store_path . "/" . $item;
-            $json = file_get_contents($real_path);
-            $data = json_decode($json);
-            $result_data = $data->result_data;
-            if (!empty($result_data->product_list)) {
-                $this->saveDataProduct($result_data->product_list);
+        try {
+            $store_path = storage_path('app/public');
+            $array_folder = scandir($store_path);
+            unset($array_folder[0]);
+            unset($array_folder[1]);
+            unset($array_folder[2]);
+            $data_async['time_start'] = Carbon::now();
+            foreach ($array_folder as $key => $item) {
+                $real_path = $store_path . "/" . $item;
+                $json = file_get_contents($real_path);
+                $data = json_decode($json);
+                $result_data = $data->result_data;
+                if (!empty($result_data->product_list)) {
+                    $this->saveDataProduct($result_data->product_list);
+                }
             }
+            $data_async['time_end'] = Carbon::now();
+            $data_async['type']     = Constant::ASYNC;
+            LogHistory::create($data_async);
+            return redirect()->route('async.index')->with('_alert_async', 'データのチェックに成功しました!!!');
+        } catch (\Throwable $th) {
+            return redirect()->route('async.index')->with('_alert_async', 'データのチェックに成功しました!!!');
         }
-        $data_async['time_end'] = Carbon::now();
-        $data_async['type']     = Constant::ASYNC;
-        LogHistory::create($data_async);
-        return redirect()->route('async.index')->with('_alert_async', 'データのチェックに成功しました!!!');
     }
     public function async_single(Request $request)
     {
@@ -124,13 +128,14 @@ class AsyncController extends Controller
                     } else {
                         $this->updateProduct($product, $item);
                     }
-                    return redirect()->route('async.index')->with('_alert_async', '単一製品の同期に成功しました !!!');
+                    return redirect()->route('async.index')->with('_alert_async_single_success', '単一製品の同期に成功しました !!!');
                 }
-                return redirect()->route('async.index')->with('_alert_async', 'データの同期に成功しました!!!');
+                return redirect()->route('async.index')->with('_alert_async_single_success', 'データの同期に成功しました!!!');
             } else {
+                return redirect()->route('async.index')->with('_alert_async_single_error', 'トークンの有効期限が切れています。 更新してください。');
             }
         } catch (\Throwable $th) {
-            dd($th);
+            return redirect()->route('async.index')->with('_alert_async_single_error', 'トークンの有効期限が切れています。 更新してください。');
         }
     }
     private function createProduct($item)
@@ -161,7 +166,7 @@ class AsyncController extends Controller
                 if (empty($basicCategory)) {
                     ProductCategories::create([
                         'category_code' => $basic_category,
-                        'product_id'    => $product->product_id
+                        'product_id'    => $product->id
                     ]);
                 }
             }

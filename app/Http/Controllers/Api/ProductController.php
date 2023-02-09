@@ -26,7 +26,9 @@ class ProductController extends Controller
         $vintage    = !empty($dataSearch['vintage']) ? $dataSearch['vintage'] : self::EMPTY;
         $ranker     = !empty($dataSearch['ranker']) ? $dataSearch['ranker'] : self::EMPTY;
         //$inventory  = !empty($dataSearch['inventory']) ? htmlspecialchars($dataSearch['inventory']) : self::ALL; // with swich case inventory
-        $db = DB::table('products');
+        $db = DB::table('products AS p');
+        $db->select('p.product_id as product', 'brand_code', 'ubrand_code', 'is_display', 'is_member_only', 'product_name', 'product_page_url', 'weight', 'price', 'price_tax', 'consumption_tax_rate', 'jancode', 'vendor', 'origin', 'stock', 'is_diplay_stock', 'zoom_image_url', 'p.created_at as created_at', 'p.updated_at as updated_at', 'p.deleted_at as deleted_at');
+        $db->where('is_display', '=', 'Y');
         $totalCategory = [];
         if (!empty($category)) {
             $totalCategory = array_merge($totalCategory, $category);
@@ -46,6 +48,9 @@ class ProductController extends Controller
         if (!empty($ranker)) {
             $totalCategory = array_merge($totalCategory, $ranker);
         }
+        if (!empty($body)) {
+            $totalCategory = array_merge($totalCategory, $body);
+        }
         // keyword
         if (!is_null($keyword)) {
             $db->where(function ($query) use ($keyword) {
@@ -56,23 +61,30 @@ class ProductController extends Controller
         }
         // totalCategory
         if (!empty($totalCategory)) {
-            $db->join('product_categories', function ($join) use ($totalCategory) {
-                $andjoin = $join->on('products.id', '=', 'product_categories.product_id');
-                $andjoin->whereIn('product_categories.category_code', $totalCategory);
+            $db->join('product_categories', function ($join) use ($totalCategory, $body, $category) {
+                $andjoin = $join->on('p.id', '=', 'product_categories.product_id');
+                $andjoin->whereIn('product_categories.category_code', $body);
+                if (!empty($category)) {
+                    $andjoin->whereIn('product_categories.category_code', $category);
+                }
             });
         }
         // price min and price max
         $db->whereBetween('price_tax', [$price_min, $price_max]);
         $db->whereNull('deleted_at');
+        $db->distinct();
         // stock
-        $db->where('stock', '>', 0);
-        $products = $db->paginate(52);
+        $endWhere = $db->where('stock', '>', 0);
+        $sql = $endWhere->toSql();
+        $products = $endWhere->paginate(52);
         return sendResponse(
             [
                 'products' => $products,
                 'price_min' => $price_min,
                 'price_max' => $price_max,
-                'totalCategory' => $totalCategory
+                'totalCategory' => $totalCategory,
+                'body'     => $body,
+                'sql'      => $sql
             ],
             "Search successfully !!!"
         );
