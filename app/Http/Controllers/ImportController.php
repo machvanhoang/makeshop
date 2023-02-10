@@ -12,7 +12,7 @@ class ImportController extends Controller
     {
         if ($request->getMethod() == 'POST') {
             try {
-                $import = Excel::import(new ProductCategoriesImport, $request->file_excel);
+                Excel::import(new ProductCategoriesImport, $request->file_excel);
                 return redirect()->route('import.index')->with('_alert_total', __('ユーザーが正常にインポートされました'));
             } catch (\Maatwebsite\Excel\Validators\ValidationException $e) {
                 $failures = $e->failures();

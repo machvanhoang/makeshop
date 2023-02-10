@@ -1,0 +1,15 @@
+RewriteEngine on
+RewriteCond %{REQUEST_URI} !^public
+RewriteRule ^(.*)$ public/$1 [L]
+RewriteCond %{HTTPS} off
+RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [R,L] 
+<IfModule mod_headers.c>
+        Header set Strict-Transport-Security "max-age=31536000" env=HTTPS
+        Header always set X-Frame-Options "SAMEORIGIN"
+        Header setifempty Referrer-Policy: same-origin
+        Header set X-XSS-Protection "1; mode=block"
+        Header set X-Permitted-Cross-Domain-Policies "none"
+        Header set Referrer-Policy "no-referrer"
+        Header set X-Content-Type-Options: nosniff
+        Header always unset "X-Powered-By"
+</IfModule>

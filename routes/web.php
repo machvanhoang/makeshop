@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\AsyncController;
+use App\Http\Controllers\CommandController;
 use App\Http\Controllers\ImportController;
 use App\Http\Controllers\SearchController;
 /*
@@ -64,5 +65,16 @@ Route::group(
     ],
     function () {
         Route::match(['get', 'post'], '/', [ImportController::class, 'index'])->name('index');
+    }
+);
+
+Route::group(
+    [
+        'middleware' => ['auth'],
+        'prefix' => 'command',
+        'as' => 'command.'
+    ],
+    function () {
+        Route::match(['get', 'post'], '/', [CommandController::class, 'index'])->name('index');
     }
 );
