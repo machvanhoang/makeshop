@@ -28,7 +28,7 @@ Auth::routes([
 ]);
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');
-Route::get('/search', [SearchController::class, 'search'])->name('search');
+Route::get('/search.html', [SearchController::class, 'search'])->name('search');
 Route::group(
     [
         'middleware' => ['auth'],

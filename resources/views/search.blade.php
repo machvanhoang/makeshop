@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <base href="https://makeshop.local/">
+    <base href="/">
     <link rel="icon" type="image/png" href="https://allgrow-labo.jp/images/favicon/favicon-32x32.png">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,14 +13,14 @@
     <link rel="stylesheet" href="{{ asset('/makeshop/style.css') }}">
     <script src="{{ asset('/makeshop/listSearch.js') }}"></script>
     <script>
-        const API = "http://api.shinanoya-wine.jp/api";
-        const DEFAULT_PAGE = `${API}/product/search?page=1`;
+        const DEFAULT_PAGE = `/api/product/search?page=1`;
     </script>
     <script src="{{ asset('/makeshop/result_data.js') }}"></script>
     <script src="https://code.jquery.com/jquery-3.6.2.min.js"
         integrity="sha256-2krYZKh//PcchRtd+H+VyyQoZ/e3EcrkxhM8ycwASPA=" crossorigin="anonymous"></script>
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/9.0.0/nouislider.min.js"></script>
 </head>
 
@@ -144,8 +144,7 @@
                                                             <svg xmlns="http://www.w3.org/2000/svg" width="20"
                                                                 height="20" viewBox="0 0 20 20"
                                                                 class="svg-down mr-2 inline-block h-5 w-5 fill-current opacity-25">
-                                                                <g fill="none" fill-opacity=".88"
-                                                                    fill-rule="evenodd">
+                                                                <g fill="none" fill-opacity=".88" fill-rule="evenodd">
                                                                     <g fill="#000">
                                                                         <g>
                                                                             <g>
@@ -187,8 +186,7 @@
                                             <div v-else>
                                                 <div class="item-checkbox">
                                                     <label v-bind:for="`type_${item_child.code}`">
-                                                        <input type="radio" name="origin"
-                                                            v-bind:value="item_child.code"
+                                                        <input type="radio" name="origin" v-bind:value="item_child.code"
                                                             v-model="arraySearch.origin"
                                                             v-bind:id="`type_${item_child.code}`"
                                                             class="custom-form-checkbox" />
@@ -296,9 +294,8 @@
                         <div class="flex-type">
                             <div v-for="(item, index) in listSearch.size" class="item-checkbox">
                                 <label v-bind:for="`size_${item.id}`">
-                                    <input type="checkbox" name="size[]" v-model="arraySearch.size"
-                                        :value="item.code" v-bind:id="`size_${item.id}`"
-                                        class="custom-form-checkbox" />
+                                    <input type="checkbox" name="size[]" v-model="arraySearch.size" :value="item.code"
+                                        v-bind:id="`size_${item.id}`" class="custom-form-checkbox" />
                                     <span>@{{ item.name }}</span>
                                 </label>
                             </div>
@@ -376,8 +373,7 @@
                                             class="item-checkbox">
                                             <label v-bind:for="`ranker_${item_child.code}`">
                                                 <input type="checkbox" name="ranker[]" v-bind:value="item_child.code"
-                                                    v-model="arraySearch.ranker"
-                                                    v-bind:id="`ranker_${item_child.code}`"
+                                                    v-model="arraySearch.ranker" v-bind:id="`ranker_${item_child.code}`"
                                                     class="custom-form-checkbox" />
                                                 <span>@{{ item_child.name }}</span>
                                             </label>
@@ -416,11 +412,11 @@
                                 <span>3</span>
                             </div>
                             <div class="control">
-                                <input type="number" name="power_min" value="1" id="power_min" max="3"
-                                    min="1" ref="power_min" placeholder="1">
+                                <input type="number" name="power_min" value="1" id="power_min" max="3" min="1"
+                                    ref="power_min" placeholder="1">
                                 <span> から </span>
-                                <input type="number" name="power_max" value="3" id="power_max" max="3"
-                                    min="1" ref="power_max" placeholder="3">
+                                <input type="number" name="power_max" value="3" id="power_max" max="3" min="1"
+                                    ref="power_max" placeholder="3">
                             </div>
                         </div>
                     </main>
@@ -469,8 +465,8 @@
             </div>
             <div class="main-search" ref="main-search">
                 <div class="total-search mb-2 ps-3">
-                    ページ @{{ current_page }} <span id="total" ref="total"
-                        name="total"><b>@{{ dataItems.length }}</b></span> 個の製品が見つかりました
+                    ページ @{{ current_page }} <span id="total" ref="total" name="total"><b>@{{ dataItems.length
+                            }}</b></span> 個の製品が見つかりました
                 </div>
                 <div class="result-search">
                     <div class="product-wrap">
@@ -482,11 +478,11 @@
                                         <img v-bind:src="formatJapan(item.zoom_image_url)"
                                             v-bind:alt="formatJapan(item.product_name)" loading="lazy">
                                     </a>
+                                    @{{ item.id }}
                                 </div>
                                 <div class="itemDetail">
                                     <div class="iconArea">
-                                        <img src="https://www.shinanoya-tokyo.jp/images/common/iconM.gif"
-                                            alt="iconM">
+                                        <img src="https://www.shinanoya-tokyo.jp/images/common/iconM.gif" alt="iconM">
                                         <img src="https://www.shinanoya-tokyo.jp/shopimages/4708/iconAG.gif"
                                             alt="iconAG">
                                         <img src="https://www.shinanoya-tokyo.jp/shopimages/4708/iconAH.gif"
@@ -504,7 +500,7 @@
                         </ul>
                     </div>
                 </div>
-                <div v-if="links.length" class="paging-search">
+                <div v-if="totalProduct" class="paging-search">
                     <ul>
                         <li v-for="(item, index) in links" v-on:click="onPaging(item.url)"
                             v-bind:class="{ active: item.active, disabled: (item.url === null ? true : false ) }">
@@ -516,9 +512,7 @@
         </div>
     </div>
     <script>
-        const {
-            createApp
-        } = Vue;
+        const { createApp } = Vue;
         const ALL = "all";
         const MIN_PRICE = 0;
         const MAX_PRICE = 1000000;
@@ -536,7 +530,6 @@
                     arraySearch: {
                         price_min: MIN_PRICE,
                         price_max: MAX_PRICE,
-
                         category: [],
                         origin: "",
                         type: [],
@@ -549,7 +542,8 @@
                     },
                     links: [],
                     current_page: 1,
-                    submit: true
+                    submit: true,
+                    totalProduct: 0
                 }
             },
             mounted() {
@@ -568,10 +562,8 @@
                     this.getResultData(url);
                 },
                 onFormatPrice() {
-                    this.arraySearch.price_min = isNaN(parseFloat(this.$refs.price_min.value)) ? 0 : parseFloat(this
-                        .$refs.price_min.value);
-                    this.arraySearch.price_max = isNaN(parseFloat(this.$refs.price_max.value)) ? MAX_PRICE :
-                        parseFloat(this.$refs.price_max.value);
+                    this.arraySearch.price_min = isNaN(parseFloat(this.$refs.price_min.value)) ? 0 : parseFloat(this.$refs.price_min.value);
+                    this.arraySearch.price_max = isNaN(parseFloat(this.$refs.price_max.value)) ? MAX_PRICE : parseFloat(this.$refs.price_max.value);
                 },
                 onSearch(loader = true) {
                     if (!this.submit)
@@ -609,28 +601,35 @@
                     });
                     return array_power;
                 },
+                _console() {
+                    console.log('START___console ____START');
+                    console.log('__arraySearch =', this.arraySearch);
+                    console.log('__power_min', this.power_min);
+                    console.log('__power_max', this.power_max);
+                    console.log('END___console ____END');
+                },
                 async getResultData(url = DEFAULT_PAGE) {
-                    //this.loader = true;
-                    await axios.post(url, this.arraySearch, {
+                    this.loader = true;
+                    try {
+                        await axios.post(url, this.arraySearch, {
                             headers: {
-                                'Access-Control-Allow-Origin': 'http://api.shinanoya-wine.jp/api',
                                 'Content-Security-Policy': 'upgrade-insecure-requests'
-                            },
-                            maxRedirects:0
+                            }
                         })
-                        .then((response) => {
-                            const {
-                                result
-                            } = response.data;
-                            const {
-                                products
-                            } = result;
-                            console.log('result', result);
-                            this.links = products.links;
-                            this.current_page = products.current_page;
-                            this.dataItems = products.data;
-                        });
-                    //this.loader = false;
+                            .then((response) => {
+                                const { result } = response.data;
+                                const { products } = result;
+                                this.links = products.links;
+                                this.totalProduct = products.total;
+                                this.current_page = products.current_page;
+                                this.dataItems = products.data;
+                                this.loader = false;
+                                this._console();
+                            });
+                    } catch (error) {
+                        console.error(error);
+                        this.loader = true;
+                    }
                 },
                 async getListSearch() {
                     this.listSearch = listSearch();
@@ -662,7 +661,7 @@
             step: gap,
             range: {
                 'min': minVal, //最小値を-5
-                'max': maxVal //最小値を+5
+                'max': maxVal  //最小値を+5
             },
             pips: {
                 mode: 'range',
@@ -671,7 +670,7 @@
         });
 
         //noUiSlider event
-        $slider.noUiSlider.on('update', function(values, handle) {
+        $slider.noUiSlider.on('update', function (values, handle) {
             //現在の最小値・最大値を取得
             var value = Math.floor(values[handle]);
             if (handle) {
@@ -686,12 +685,12 @@
         });
 
         //最小値をinputにセット
-        $min.get(0).addEventListener('change', function() {
+        $min.get(0).addEventListener('change', function () {
             $slider.noUiSlider.set([this.value, null]);
         });
 
         //最大値をinputにセット
-        $max.get(0).addEventListener('change', function() {
+        $max.get(0).addEventListener('change', function () {
             $slider.noUiSlider.set([null, this.value]);
         });
     </script>
