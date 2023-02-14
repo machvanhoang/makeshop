@@ -12,13 +12,13 @@ class ImportController extends Controller
     {
         if ($request->getMethod() == 'POST') {
             try {
-                Excel::import(new ProductCategoriesImport, $request->file_excel);
+                $import = Excel::import(new ProductCategoriesImport, $request->file_excel);
                 return redirect()->route('import.index')->with('_alert_total', __('ユーザーが正常にインポートされました'));
             } catch (\Maatwebsite\Excel\Validators\ValidationException $e) {
                 $failures = $e->failures();
                 return redirect()->route('import.index')->with('_alert_failures', $failures);
             }
         }
-        return view('import');
+        return view('import.category');
     }
 }

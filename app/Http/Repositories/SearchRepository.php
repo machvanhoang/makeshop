@@ -24,12 +24,12 @@ class SearchRepository
         $vintage    = !empty($dataSearch['vintage']) ? $dataSearch['vintage'] : self::EMPTY;
         $ranker     = !empty($dataSearch['ranker']) ? $dataSearch['ranker'] : self::EMPTY;
         $db = DB::table('products AS p');
-        $db->select('p.product_id as product', 'brand_code', 'ubrand_code', 'is_display', 'is_member_only', 'product_name', 'product_page_url', 'weight', 'price', 'price_tax', 'consumption_tax_rate', 'jancode', 'vendor', 'origin', 'stock', 'is_diplay_stock', 'zoom_image_url', 'p.created_at as created_at', 'p.updated_at as updated_at', 'p.deleted_at as deleted_at');
+        $db->select('p.id as product', 'brand_code', 'ubrand_code', 'name', 'price', 'price_buy', 'price_tax', 'weight', 'vendor', 'origin', 'point', 'stock', 'image_big', 'image_small', 'is_display', 'p.created_at as created_at', 'p.updated_at as updated_at', 'p.deleted_at as deleted_at');
         $db->where('is_display', '=', 'Y');
         // keyword
         if (!is_null($keyword)) {
             $db->where(function ($query) use ($keyword) {
-                $query->where('product_name', 'LIKE', '%' . $keyword . '%')
+                $query->where('name', 'LIKE', '%' . $keyword . '%')
                     ->orWhere('brand_code', 'LIKE', '%' . $keyword . '%')
                     ->orWhere('ubrand_code', 'LIKE', '%' . $keyword . '%');
             });
@@ -81,9 +81,7 @@ class SearchRepository
         $db->whereBetween('price_tax', [$price_min, $price_max]);
         $db->whereNull('deleted_at');
         $db->distinct();
-        // stock
-        $endWhere = $db->where('stock', '>', 0);
-        $products = $endWhere->paginate(52);
+        $products = $db->paginate(52);
         return $products;
     }
 }

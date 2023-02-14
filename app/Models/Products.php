@@ -12,23 +12,20 @@ class Products extends Model
     use HasFactory;
     use SoftDeletes;
     protected $fillable = [
-        'product_id',
         'brand_code',
         'ubrand_code',
-        'is_display',
-        'is_member_only',
-        'product_name',
-        'product_page_url',
-        'weight',
+        'name',
         'price',
-        'price_tax',
-        'consumption_tax_rate',
-        'jancode',
+        'price_buy',
+        'weight',
         'vendor',
         'origin',
+        'point',
         'stock',
-        'is_diplay_stock',
-        'zoom_image_url',
+        'image_big',
+        'image_small',
+        'is_display',
+        'price_tax'
     ];
     public function categories(){
         return $this->hasMany(ProductCategories::class,'product_id','id')->select(['id','category_code']);

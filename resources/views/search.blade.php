@@ -84,7 +84,7 @@
                                     <input type="checkbox" name="size[]" v-model="arraySearch.category"
                                         :value="item.code" v-bind:id="`category_${item.code}`"
                                         class="custom-form-checkbox" />
-                                    <span>@{{ item.name }}</span>
+                                    <span>{{ item.name }}</span>
                                 </label>
                             </div>
                         </div>
@@ -130,7 +130,7 @@
                                                         d="M6.187 16.9c-.25.253-.25.66 0 .91.248.253.652.253.9 0l7.285-7.355c.25-.25.25-.66 0-.91L7.088 2.19c-.25-.253-.652-.253-.9 0-.25.25-.25.658-.002.91L12.83 10l-6.643 6.9z">
                                                     </path>
                                                 </svg>
-                                                <span>@{{ item.name }}</span>
+                                                <span>{{ item.name }}</span>
                                             </div>
                                         </button>
                                     </div>
@@ -144,7 +144,8 @@
                                                             <svg xmlns="http://www.w3.org/2000/svg" width="20"
                                                                 height="20" viewBox="0 0 20 20"
                                                                 class="svg-down mr-2 inline-block h-5 w-5 fill-current opacity-25">
-                                                                <g fill="none" fill-opacity=".88" fill-rule="evenodd">
+                                                                <g fill="none" fill-opacity=".88"
+                                                                    fill-rule="evenodd">
                                                                     <g fill="#000">
                                                                         <g>
                                                                             <g>
@@ -165,7 +166,7 @@
                                                                     d="M6.187 16.9c-.25.253-.25.66 0 .91.248.253.652.253.9 0l7.285-7.355c.25-.25.25-.66 0-.91L7.088 2.19c-.25-.253-.652-.253-.9 0-.25.25-.25.658-.002.91L12.83 10l-6.643 6.9z">
                                                                 </path>
                                                             </svg>
-                                                            <span>@{{ item_child.name }}</span>
+                                                            <span>{{ item_child.name }}</span>
                                                         </div>
                                                     </button>
                                                 </div>
@@ -178,7 +179,7 @@
                                                                 v-model="arraySearch.origin"
                                                                 v-bind:id="`type_${item_child_lv2.code}`"
                                                                 class="custom-form-checkbox" />
-                                                            <span>@{{ item_child_lv2.name }}</span>
+                                                            <span>{{ item_child_lv2.name }}</span>
                                                         </label>
                                                     </div>
                                                 </div>
@@ -186,11 +187,12 @@
                                             <div v-else>
                                                 <div class="item-checkbox">
                                                     <label v-bind:for="`type_${item_child.code}`">
-                                                        <input type="radio" name="origin" v-bind:value="item_child.code"
+                                                        <input type="radio" name="origin"
+                                                            v-bind:value="item_child.code"
                                                             v-model="arraySearch.origin"
                                                             v-bind:id="`type_${item_child.code}`"
                                                             class="custom-form-checkbox" />
-                                                        <span>@{{ item_child.name }}</span>
+                                                        <span>{{ item_child.name }}</span>
                                                     </label>
                                                 </div>
                                             </div>
@@ -203,7 +205,7 @@
                                             <input type="radio" name="origin" v-bind:value="item.code"
                                                 v-model="arraySearch.origin" v-bind:id="`origin_${item.code}`"
                                                 class="custom-form-checkbox" />
-                                            <span>@{{ item.name }}</span>
+                                            <span>{{ item.name }}</span>
                                         </label>
                                     </div>
                                 </div>
@@ -251,7 +253,7 @@
                                                         d="M6.187 16.9c-.25.253-.25.66 0 .91.248.253.652.253.9 0l7.285-7.355c.25-.25.25-.66 0-.91L7.088 2.19c-.25-.253-.652-.253-.9 0-.25.25-.25.658-.002.91L12.83 10l-6.643 6.9z">
                                                     </path>
                                                 </svg>
-                                                <span>@{{ item.name }}</span>
+                                                <span>{{ item.name }}</span>
                                             </div>
                                         </button>
                                     </div>
@@ -262,7 +264,7 @@
                                                 <input type="checkbox" name="type[]" v-bind:value="item_child.code"
                                                     v-model="arraySearch.type" v-bind:id="`type_${item_child.code}`"
                                                     class="custom-form-checkbox" />
-                                                <span>@{{ item_child.name }}</span>
+                                                <span>{{ item_child.name }}</span>
                                             </label>
                                         </div>
                                     </div>
@@ -273,7 +275,7 @@
                                             <input type="checkbox" name="type[]" v-bind:value="item.code"
                                                 v-model="arraySearch.type" v-bind:id="`type_${item.code}`"
                                                 class="custom-form-checkbox" />
-                                            <span>@{{ item.name }}</span>
+                                            <span>{{ item.name }}</span>
                                         </label>
                                     </div>
                                 </div>
@@ -294,9 +296,10 @@
                         <div class="flex-type">
                             <div v-for="(item, index) in listSearch.size" class="item-checkbox">
                                 <label v-bind:for="`size_${item.id}`">
-                                    <input type="checkbox" name="size[]" v-model="arraySearch.size" :value="item.code"
-                                        v-bind:id="`size_${item.id}`" class="custom-form-checkbox" />
-                                    <span>@{{ item.name }}</span>
+                                    <input type="checkbox" name="size[]" v-model="arraySearch.size"
+                                        :value="item.code" v-bind:id="`size_${item.id}`"
+                                        class="custom-form-checkbox" />
+                                    <span>{{ item.name }}</span>
                                 </label>
                             </div>
                         </div>
@@ -318,7 +321,7 @@
                                     <input type="checkbox" name="vintage[]" v-model="arraySearch.vintage"
                                         :value="item.code" v-bind:id="`vintage_${item.id}`"
                                         class="custom-form-checkbox" />
-                                    <span>@{{ item.name }}</span>
+                                    <span>{{ item.name }}</span>
                                 </label>
                             </div>
                         </div>
@@ -364,7 +367,7 @@
                                                         d="M6.187 16.9c-.25.253-.25.66 0 .91.248.253.652.253.9 0l7.285-7.355c.25-.25.25-.66 0-.91L7.088 2.19c-.25-.253-.652-.253-.9 0-.25.25-.25.658-.002.91L12.83 10l-6.643 6.9z">
                                                     </path>
                                                 </svg>
-                                                <span>@{{ item.name }}</span>
+                                                <span>{{ item.name }}</span>
                                             </div>
                                         </button>
                                     </div>
@@ -373,9 +376,10 @@
                                             class="item-checkbox">
                                             <label v-bind:for="`ranker_${item_child.code}`">
                                                 <input type="checkbox" name="ranker[]" v-bind:value="item_child.code"
-                                                    v-model="arraySearch.ranker" v-bind:id="`ranker_${item_child.code}`"
+                                                    v-model="arraySearch.ranker"
+                                                    v-bind:id="`ranker_${item_child.code}`"
                                                     class="custom-form-checkbox" />
-                                                <span>@{{ item_child.name }}</span>
+                                                <span>{{ item_child.name }}</span>
                                             </label>
                                         </div>
                                     </div>
@@ -386,7 +390,7 @@
                                             <input type="checkbox" name="ranker[]" v-bind:value="item.code"
                                                 v-model="arraySearch.ranker" v-bind:id="`ranker_${item.code}`"
                                                 class="custom-form-checkbox" />
-                                            <span>@{{ item.name }}</span>
+                                            <span>{{ item.name }}</span>
                                         </label>
                                     </div>
                                 </div>
@@ -412,11 +416,11 @@
                                 <span>3</span>
                             </div>
                             <div class="control">
-                                <input type="number" name="power_min" value="1" id="power_min" max="3" min="1"
-                                    ref="power_min" placeholder="1">
+                                <input type="number" name="power_min" value="1" id="power_min" max="3"
+                                    min="1" ref="power_min" placeholder="1">
                                 <span> から </span>
-                                <input type="number" name="power_max" value="3" id="power_max" max="3" min="1"
-                                    ref="power_max" placeholder="3">
+                                <input type="number" name="power_max" value="3" id="power_max" max="3"
+                                    min="1" ref="power_max" placeholder="3">
                             </div>
                         </div>
                     </main>
@@ -465,8 +469,8 @@
             </div>
             <div class="main-search" ref="main-search">
                 <div class="total-search mb-2 ps-3">
-                    ページ @{{ current_page }} <span id="total" ref="total" name="total"><b>@{{ dataItems.length
-                            }}</b></span> 個の製品が見つかりました
+                    ページ {{ current_page }} <span id="total" ref="total"
+                        name="total"><b>{{ dataItems.length }}</b></span> 個の製品が見つかりました
                 </div>
                 <div class="result-search">
                     <div class="product-wrap">
@@ -474,26 +478,27 @@
                             <li v-for="(item, index) in dataItems" key="index" v-bind:index="index"
                                 v-bind:price="item.price">
                                 <div class="itemImg">
-                                    <a v-bind:href="formatJapan(item.product_page_url)" target="blank">
-                                        <img v-bind:src="formatJapan(item.zoom_image_url)"
-                                            v-bind:alt="formatJapan(item.product_name)" loading="lazy">
+                                    <a v-bind:href="getUrl(item.brand_code)" target="blank" v-bind:title="item.name">
+                                        <img v-bind:src="getImage(item.image_big)" v-bind:alt="item.name"
+                                            loading="lazy">
                                     </a>
-                                    @{{ item.id }}
+                                    {{ item.id }}
                                 </div>
                                 <div class="itemDetail">
                                     <div class="iconArea">
-                                        <img src="https://www.shinanoya-tokyo.jp/images/common/iconM.gif" alt="iconM">
+                                        <img src="https://www.shinanoya-tokyo.jp/images/common/iconM.gif"
+                                            alt="iconM">
                                         <img src="https://www.shinanoya-tokyo.jp/shopimages/4708/iconAG.gif"
                                             alt="iconAG">
                                         <img src="https://www.shinanoya-tokyo.jp/shopimages/4708/iconAH.gif"
                                             alt="iconAH">
                                     </div>
                                     <h3 class="name">
-                                        <a v-bind:href="formatJapan(item.product_page_url)" target="blank"
-                                            v-html="formatJapan(item.product_name)">
+                                        <a v-bind:href="getUrl(item.brand_code)" target="blank">
+                                            {{ item.name }}
                                         </a>
                                     </h3>
-                                    <p class="price">@{{ formatPrice(item.price_tax) }}（税込）
+                                    <p class="price">{{ formatPrice(item.price_tax) }}（税込）
                                     </p>
                                 </div>
                             </li>
@@ -512,7 +517,9 @@
         </div>
     </div>
     <script>
-        const { createApp } = Vue;
+        const {
+            createApp
+        } = Vue;
         const ALL = "all";
         const MIN_PRICE = 0;
         const MAX_PRICE = 1000000;
@@ -562,8 +569,10 @@
                     this.getResultData(url);
                 },
                 onFormatPrice() {
-                    this.arraySearch.price_min = isNaN(parseFloat(this.$refs.price_min.value)) ? 0 : parseFloat(this.$refs.price_min.value);
-                    this.arraySearch.price_max = isNaN(parseFloat(this.$refs.price_max.value)) ? MAX_PRICE : parseFloat(this.$refs.price_max.value);
+                    this.arraySearch.price_min = isNaN(parseFloat(this.$refs.price_min.value)) ? 0 : parseFloat(this
+                        .$refs.price_min.value);
+                    this.arraySearch.price_max = isNaN(parseFloat(this.$refs.price_max.value)) ? MAX_PRICE :
+                        parseFloat(this.$refs.price_max.value);
                 },
                 onSearch(loader = true) {
                     if (!this.submit)
@@ -585,8 +594,11 @@
                     let val = (value / 1).toFixed(0).replace('.', ',')
                     return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
                 },
-                formatJapan(string = "") {
-                    return string;
+                getImage(image = null) {
+                    return `https://makeshop-multi-images.akamaized.net/4708/itemimages/${image}`;
+                },
+                getUrl(slug = null) {
+                    return `https://www.shinanoya-tokyo.jp/view/item/${slug}`;
                 },
                 checkBody() {
                     let list_body = this.listSearch.body;
@@ -612,13 +624,17 @@
                     this.loader = true;
                     try {
                         await axios.post(url, this.arraySearch, {
-                            headers: {
-                                'Content-Security-Policy': 'upgrade-insecure-requests'
-                            }
-                        })
+                                headers: {
+                                    'Content-Security-Policy': 'upgrade-insecure-requests'
+                                }
+                            })
                             .then((response) => {
-                                const { result } = response.data;
-                                const { products } = result;
+                                const {
+                                    result
+                                } = response.data;
+                                const {
+                                    products
+                                } = result;
                                 this.links = products.links;
                                 this.totalProduct = products.total;
                                 this.current_page = products.current_page;
@@ -661,7 +677,7 @@
             step: gap,
             range: {
                 'min': minVal, //最小値を-5
-                'max': maxVal  //最小値を+5
+                'max': maxVal //最小値を+5
             },
             pips: {
                 mode: 'range',
@@ -670,7 +686,7 @@
         });
 
         //noUiSlider event
-        $slider.noUiSlider.on('update', function (values, handle) {
+        $slider.noUiSlider.on('update', function(values, handle) {
             //現在の最小値・最大値を取得
             var value = Math.floor(values[handle]);
             if (handle) {
@@ -685,12 +701,12 @@
         });
 
         //最小値をinputにセット
-        $min.get(0).addEventListener('change', function () {
+        $min.get(0).addEventListener('change', function() {
             $slider.noUiSlider.set([this.value, null]);
         });
 
         //最大値をinputにセット
-        $max.get(0).addEventListener('change', function () {
+        $max.get(0).addEventListener('change', function() {
             $slider.noUiSlider.set([null, this.value]);
         });
     </script>
