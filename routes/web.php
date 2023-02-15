@@ -2,9 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\CommandController;
-use App\Http\Controllers\ImportController;
-use App\Http\Controllers\ImportProductController;
+use App\Http\Controllers\Import\ImportCategoriesController;
+use App\Http\Controllers\Import\ImportProductController;
 use App\Http\Controllers\SearchController;
 /*
 |--------------------------------------------------------------------------
@@ -36,28 +35,7 @@ Route::group(
         'as' => 'import.'
     ],
     function () {
-        Route::match(['get', 'post'], '/', [ImportController::class, 'index'])->name('index');
-    }
-);
-
-Route::group(
-    [
-        'middleware' => ['auth'],
-        'prefix' => 'import_product',
-        'as' => 'import_product.'
-    ],
-    function () {
-        Route::match(['get', 'post'], '/', [ImportProductController::class, 'index'])->name('index');
-    }
-);
-
-Route::group(
-    [
-        'middleware' => ['auth'],
-        'prefix' => 'command',
-        'as' => 'command.'
-    ],
-    function () {
-        Route::match(['get', 'post'], '/', [CommandController::class, 'index'])->name('index');
+        Route::match(['get', 'post'], '/product', [ImportProductController::class, 'index'])->name('product');
+        Route::match(['get', 'post'], '/category', [ImportCategoriesController::class, 'index'])->name('category');
     }
 );

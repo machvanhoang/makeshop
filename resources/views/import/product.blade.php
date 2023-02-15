@@ -36,7 +36,7 @@
                                 </svg></span> &nbsp;&nbsp;ビデオチュートリアル</a>
                     </div>
                     <div class="card-body">
-                        <form action="{{ route('import_product.index') }}" role="form" method="POST"
+                        <form action="{{ route('import.product') }}" role="form" method="POST"
                             enctype="multipart/form-data">
                             @csrf
                             <div class="mb-3">

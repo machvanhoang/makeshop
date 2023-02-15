@@ -598,7 +598,12 @@ function getSize() {
     {
       "id": 1,
       "name": "すべて",
-      "code": "all"
+      "code": "all",
+      "codes": [
+        "ct690",
+        "ct691",
+        "ct692"
+      ]
     },
     {
       "id": 2,
@@ -623,7 +628,12 @@ function getVintage() {
     {
       "id": 1,
       "name": "すべて",
-      "code": "all"
+      "code": "all",
+      "codes": [
+        "ct686",
+        "ct687",
+        "ct688"
+      ]
     },
     {
       "id": 2,
@@ -648,7 +658,15 @@ function getRanker() {
     {
       "id": 1,
       "name": "すべて",
-      "code": "ct1"
+      "code": "all",
+      "codes": [
+        "ct702",
+        "ct703",
+        "ct704",
+        "ct705",
+        "ct706",
+        "ct934"
+      ]
     },
     {
       "id": 2,

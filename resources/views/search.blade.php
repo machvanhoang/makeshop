@@ -13,9 +13,9 @@
     <link rel="stylesheet" href="{{ asset('/makeshop/style.css') }}">
     <script src="{{ asset('/makeshop/listSearch.js') }}"></script>
     <script>
-        const DEFAULT_PAGE = `/api/product/search?page=1`;
+        const API = 'https://makeshop_tool.local';
+        const DEFAULT_PAGE = `${API}/api/product/search?page=1`;
     </script>
-    <script src="{{ asset('/makeshop/result_data.js') }}"></script>
     <script src="https://code.jquery.com/jquery-3.6.2.min.js"
         integrity="sha256-2krYZKh//PcchRtd+H+VyyQoZ/e3EcrkxhM8ycwASPA=" crossorigin="anonymous"></script>
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
@@ -84,7 +84,7 @@
                                     <input type="checkbox" name="size[]" v-model="arraySearch.category"
                                         :value="item.code" v-bind:id="`category_${item.code}`"
                                         class="custom-form-checkbox" />
-                                    <span>{{ item.name }}</span>
+                                    <span>@{{ item.name }}</span>
                                 </label>
                             </div>
                         </div>
@@ -130,7 +130,7 @@
                                                         d="M6.187 16.9c-.25.253-.25.66 0 .91.248.253.652.253.9 0l7.285-7.355c.25-.25.25-.66 0-.91L7.088 2.19c-.25-.253-.652-.253-.9 0-.25.25-.25.658-.002.91L12.83 10l-6.643 6.9z">
                                                     </path>
                                                 </svg>
-                                                <span>{{ item.name }}</span>
+                                                <span>@{{ item.name }}</span>
                                             </div>
                                         </button>
                                     </div>
@@ -166,7 +166,7 @@
                                                                     d="M6.187 16.9c-.25.253-.25.66 0 .91.248.253.652.253.9 0l7.285-7.355c.25-.25.25-.66 0-.91L7.088 2.19c-.25-.253-.652-.253-.9 0-.25.25-.25.658-.002.91L12.83 10l-6.643 6.9z">
                                                                 </path>
                                                             </svg>
-                                                            <span>{{ item_child.name }}</span>
+                                                            <span>@{{ item_child.name }}</span>
                                                         </div>
                                                     </button>
                                                 </div>
@@ -179,7 +179,7 @@
                                                                 v-model="arraySearch.origin"
                                                                 v-bind:id="`type_${item_child_lv2.code}`"
                                                                 class="custom-form-checkbox" />
-                                                            <span>{{ item_child_lv2.name }}</span>
+                                                            <span>@{{ item_child_lv2.name }}</span>
                                                         </label>
                                                     </div>
                                                 </div>
@@ -192,7 +192,7 @@
                                                             v-model="arraySearch.origin"
                                                             v-bind:id="`type_${item_child.code}`"
                                                             class="custom-form-checkbox" />
-                                                        <span>{{ item_child.name }}</span>
+                                                        <span>@{{ item_child.name }}</span>
                                                     </label>
                                                 </div>
                                             </div>
@@ -205,7 +205,7 @@
                                             <input type="radio" name="origin" v-bind:value="item.code"
                                                 v-model="arraySearch.origin" v-bind:id="`origin_${item.code}`"
                                                 class="custom-form-checkbox" />
-                                            <span>{{ item.name }}</span>
+                                            <span>@{{ item.name }}</span>
                                         </label>
                                     </div>
                                 </div>
@@ -253,7 +253,7 @@
                                                         d="M6.187 16.9c-.25.253-.25.66 0 .91.248.253.652.253.9 0l7.285-7.355c.25-.25.25-.66 0-.91L7.088 2.19c-.25-.253-.652-.253-.9 0-.25.25-.25.658-.002.91L12.83 10l-6.643 6.9z">
                                                     </path>
                                                 </svg>
-                                                <span>{{ item.name }}</span>
+                                                <span>@{{ item.name }}</span>
                                             </div>
                                         </button>
                                     </div>
@@ -264,7 +264,7 @@
                                                 <input type="checkbox" name="type[]" v-bind:value="item_child.code"
                                                     v-model="arraySearch.type" v-bind:id="`type_${item_child.code}`"
                                                     class="custom-form-checkbox" />
-                                                <span>{{ item_child.name }}</span>
+                                                <span>@{{ item_child.name }}</span>
                                             </label>
                                         </div>
                                     </div>
@@ -275,7 +275,7 @@
                                             <input type="checkbox" name="type[]" v-bind:value="item.code"
                                                 v-model="arraySearch.type" v-bind:id="`type_${item.code}`"
                                                 class="custom-form-checkbox" />
-                                            <span>{{ item.name }}</span>
+                                            <span>@{{ item.name }}</span>
                                         </label>
                                     </div>
                                 </div>
@@ -299,7 +299,7 @@
                                     <input type="checkbox" name="size[]" v-model="arraySearch.size"
                                         :value="item.code" v-bind:id="`size_${item.id}`"
                                         class="custom-form-checkbox" />
-                                    <span>{{ item.name }}</span>
+                                    <span>@{{ item.name }}</span>
                                 </label>
                             </div>
                         </div>
@@ -321,7 +321,7 @@
                                     <input type="checkbox" name="vintage[]" v-model="arraySearch.vintage"
                                         :value="item.code" v-bind:id="`vintage_${item.id}`"
                                         class="custom-form-checkbox" />
-                                    <span>{{ item.name }}</span>
+                                    <span>@{{ item.name }}</span>
                                 </label>
                             </div>
                         </div>
@@ -367,7 +367,7 @@
                                                         d="M6.187 16.9c-.25.253-.25.66 0 .91.248.253.652.253.9 0l7.285-7.355c.25-.25.25-.66 0-.91L7.088 2.19c-.25-.253-.652-.253-.9 0-.25.25-.25.658-.002.91L12.83 10l-6.643 6.9z">
                                                     </path>
                                                 </svg>
-                                                <span>{{ item.name }}</span>
+                                                <span>@{{ item.name }}</span>
                                             </div>
                                         </button>
                                     </div>
@@ -379,7 +379,7 @@
                                                     v-model="arraySearch.ranker"
                                                     v-bind:id="`ranker_${item_child.code}`"
                                                     class="custom-form-checkbox" />
-                                                <span>{{ item_child.name }}</span>
+                                                <span>@{{ item_child.name }}</span>
                                             </label>
                                         </div>
                                     </div>
@@ -390,7 +390,7 @@
                                             <input type="checkbox" name="ranker[]" v-bind:value="item.code"
                                                 v-model="arraySearch.ranker" v-bind:id="`ranker_${item.code}`"
                                                 class="custom-form-checkbox" />
-                                            <span>{{ item.name }}</span>
+                                            <span>@{{ item.name }}</span>
                                         </label>
                                     </div>
                                 </div>
@@ -469,8 +469,8 @@
             </div>
             <div class="main-search" ref="main-search">
                 <div class="total-search mb-2 ps-3">
-                    ページ {{ current_page }} <span id="total" ref="total"
-                        name="total"><b>{{ dataItems.length }}</b></span> 個の製品が見つかりました
+                    ページ @{{ current_page }} <span id="total" ref="total"
+                        name="total"><b>@{{ dataItems.length }}</b> の @{{ totalProduct }}</span> 個の製品が見つかりました
                 </div>
                 <div class="result-search">
                     <div class="product-wrap">
@@ -482,7 +482,7 @@
                                         <img v-bind:src="getImage(item.image_big)" v-bind:alt="item.name"
                                             loading="lazy">
                                     </a>
-                                    {{ item.id }}
+                                    @{{ item.id }}
                                 </div>
                                 <div class="itemDetail">
                                     <div class="iconArea">
@@ -494,11 +494,10 @@
                                             alt="iconAH">
                                     </div>
                                     <h3 class="name">
-                                        <a v-bind:href="getUrl(item.brand_code)" target="blank">
-                                            {{ item.name }}
-                                        </a>
+                                        <a v-bind:href="getUrl(item.brand_code)" target="blank"
+                                            v-html="item.name"></a>
                                     </h3>
-                                    <p class="price">{{ formatPrice(item.price_tax) }}（税込）
+                                    <p class="price">@{{ formatPrice(item.price_tax) }}（税込）
                                     </p>
                                 </div>
                             </li>
@@ -525,7 +524,9 @@
         const MAX_PRICE = 1000000;
         const POWER_MIN = 1;
         const POWER_MAX = 3;
-
+        const DEFAULT_SIZE = getSize()[0]['codes'];
+        const DEFAULT_RANKER = getRanker()[0]['codes'];
+        const DEFAULT_VINTAGE = getVintage()[0]['codes'];
         createApp({
             data() {
                 return {
@@ -663,49 +664,38 @@
         }).mount('#appRoot');
     </script>
     <script>
-        // search price form
         var $slider = $('#range').get(0);
-        var $min = $('#power_min'); //最小値のテキストフィールド
-        var $max = $('#power_max'); //最大値のテキストフィールド
-        var minVal = POWER_MIN; //最小値
-        var maxVal = POWER_MAX; //最大値
-        var gap = 1; // 数値を5刻みにする
-        //noUiSliderをセット
+        var $min = $('#power_min');
+        var $max = $('#power_max');
+        var minVal = POWER_MIN;
+        var maxVal = POWER_MAX;
+        var gap = 1;
         noUiSlider.create($slider, {
-            start: [minVal, maxVal], //
+            start: [minVal, maxVal],
             connect: true,
             step: gap,
             range: {
-                'min': minVal, //最小値を-5
-                'max': maxVal //最小値を+5
+                'min': minVal,
+                'max': maxVal
             },
             pips: {
                 mode: 'range',
                 density: gap
             }
         });
-
-        //noUiSlider event
         $slider.noUiSlider.on('update', function(values, handle) {
-            //現在の最小値・最大値を取得
             var value = Math.floor(values[handle]);
             if (handle) {
-                $max.get(0).value = value; //現在の最大値
+                $max.get(0).value = value;
             } else {
-                $min.get(0).value = value; //現在の最小値
+                $min.get(0).value = value;
             }
-
-            //noUiSlider下部の数値変更（そのままだと+-5の数値が表示されるため）
             $('.noUi-value-large').text(minVal);
             $('.noUi-value-large:last-child').text(maxVal);
         });
-
-        //最小値をinputにセット
         $min.get(0).addEventListener('change', function() {
             $slider.noUiSlider.set([this.value, null]);
         });
-
-        //最大値をinputにセット
         $max.get(0).addEventListener('change', function() {
             $slider.noUiSlider.set([null, this.value]);
         });

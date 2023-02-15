@@ -25,7 +25,7 @@ class SearchRepository
         $ranker     = !empty($dataSearch['ranker']) ? $dataSearch['ranker'] : self::EMPTY;
         $db = DB::table('products AS p');
         $db->select('p.id as product', 'brand_code', 'ubrand_code', 'name', 'price', 'price_buy', 'price_tax', 'weight', 'vendor', 'origin', 'point', 'stock', 'image_big', 'image_small', 'is_display', 'p.created_at as created_at', 'p.updated_at as updated_at', 'p.deleted_at as deleted_at');
-        $db->where('is_display', '=', 'Y');
+        $db->where('is_display', '!=', 'N');
         // keyword
         if (!is_null($keyword)) {
             $db->where(function ($query) use ($keyword) {
