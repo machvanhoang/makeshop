@@ -116,7 +116,7 @@
                                             @endif
                                         </td>
                                         <td>
-                                            @if ($product->status != 'N')
+                                            @if ($product->is_display != 'N')
                                                 <span class="badge badge-pill badge-success">画面</span>
                                             @else
                                                 <span class="badge badge-secondary badge-success">隠れる</span>
