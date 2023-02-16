@@ -1,10 +1,11 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\SearchController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Import\ImportCategoriesController;
 use App\Http\Controllers\Import\ImportProductController;
-use App\Http\Controllers\SearchController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -28,6 +29,17 @@ Auth::routes([
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 Route::get('/search.html', [SearchController::class, 'search'])->name('search');
+Route::group(
+    [
+        'middleware' => ['auth'],
+        'prefix' => 'product',
+        'as' => 'product.'
+    ],
+    function () {
+        Route::get('/', [ProductController::class, 'index'])->name('index');
+    }
+);
+
 Route::group(
     [
         'middleware' => ['auth'],

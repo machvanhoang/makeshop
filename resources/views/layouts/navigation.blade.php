@@ -12,6 +12,10 @@
             <ul class="navbar-nav me-auto">
                 @guest
                 @else
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('product.index') }}"
+                            title="{{ __('製品一覧') }}">{{ __('製品一覧') }}</a>
+                    </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarImport" role="button"
                             data-bs-toggle="dropdown" aria-expanded="false">

@@ -10,6 +10,24 @@ class SearchRepository
     public const MAX_PRICE = 1000000;
     public const EMPTY     = [];
     public const ALL     = "all";
+    public const DEFAULT_RANKER = [
+        "ct702",
+        "ct703",
+        "ct704",
+        "ct705",
+        "ct706",
+        "ct934"
+    ];
+    public const DEFAULT_VINTAGE = [
+        "ct686",
+        "ct687",
+        "ct688"
+    ];
+    public const DEFAULT_SIZE = [
+        "ct690",
+        "ct691",
+        "ct692"
+    ];
     public function search($dataSearch)
     {
         //$inventory  = !empty($dataSearch['inventory']) ? htmlspecialchars($dataSearch['inventory']) : self::ALL; // with swich case inventory
@@ -62,26 +80,48 @@ class SearchRepository
         if (!empty($vintage)) {
             $db->join('product_categories as pc_vintage', function ($join) use ($vintage) {
                 $andjoin = $join->on('p.id', '=', 'pc_vintage.product_id');
-                $andjoin->WhereIn('pc_vintage.category_code', $vintage);
+                if ($vintage[0] == self::ALL) {
+                    $andjoin->WhereIn('pc_vintage.category_code', self::DEFAULT_VINTAGE);
+                } else {
+                    $andjoin->WhereIn('pc_vintage.category_code', $vintage);
+                }
             });
         }
         if (!empty($ranker)) {
             $db->join('product_categories as pc_ranker', function ($join) use ($ranker) {
                 $andjoin = $join->on('p.id', '=', 'pc_ranker.product_id');
-                $andjoin->WhereIn('pc_ranker.category_code', $ranker);
+                if ($ranker[0] == self::ALL) {
+                    $andjoin->WhereIn('pc_ranker.category_code', self::DEFAULT_RANKER);
+                } else {
+                    $andjoin->WhereIn('pc_ranker.category_code', $ranker);
+                }
             });
         }
         if (!empty($size)) {
             $db->join('product_categories as pc_size', function ($join) use ($size) {
                 $andjoin = $join->on('p.id', '=', 'pc_size.product_id');
                 $andjoin->WhereIn('pc_size.category_code', $size);
+                if ($size[0] == self::ALL) {
+                    $andjoin->WhereIn('pc_size.category_code', self::DEFAULT_SIZE);
+                } else {
+                    $andjoin->WhereIn('pc_size.category_code', $size);
+                }
             });
         }
         // price min and price max
         $db->whereBetween('price_tax', [$price_min, $price_max]);
         $db->whereNull('deleted_at');
         $db->distinct();
+        $sql = $db->toSql();
         $products = $db->paginate(52);
-        return $products;
+        return [
+            'products' => $products,
+            'search' => [
+                $vintage,
+                $ranker,
+                $size,
+                $sql
+            ]
+        ];
     }
 }

@@ -28,7 +28,8 @@ class Products extends Model
         'is_display',
         'price_tax'
     ];
-    public function categories(){
-        return $this->hasMany(ProductCategories::class,'product_id','id')->select(['id','category_code']);
+    public function categories()
+    {
+        return $this->hasMany(ProductCategories::class, 'product_id', 'id');
     }
 }

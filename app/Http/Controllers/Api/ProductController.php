@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Repositories\SearchRepository;
 use Illuminate\Http\Request;
-use DB;
 
 class ProductController extends Controller
 {
@@ -24,9 +23,7 @@ class ProductController extends Controller
         $dataSearch = $request->all();
         $products = $this->searchRepository->search($dataSearch);
         return sendResponse(
-            [
-                'products' => $products,
-            ],
+            $products,
             "Search successfully !!!"
         );
     }
