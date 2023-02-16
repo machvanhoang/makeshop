@@ -757,3 +757,26 @@ function listSearch() {
   }
   return _data;
 }
+function allOrigin(checked) {
+  let new_Origin = [];
+  if (!checked) {
+    return new_Origin;
+  }
+  const _all_origin = getOrigin();
+  _all_origin.forEach(parent => {
+    new_Origin.push(parent.code);
+    if (parent.child) {
+      let child = parent.array_child;
+      child.forEach(child => {
+        new_Origin.push(child.code);
+        if (child.child) {
+          let child_level = child.array_child;
+          child_level.forEach(child_lv => {
+            new_Origin.push(child_lv.code);
+          });
+        }
+      });
+    }
+  });
+  return new_Origin;
+}

@@ -10,6 +10,8 @@ class SearchRepository
     public const MAX_PRICE = 1000000;
     public const EMPTY     = [];
     public const ALL     = "all";
+    public const INVENTORY_SOLD_OUT = 'sold-out';
+    public const INVENTORY_STOCKING = 'stocking';
     public const DEFAULT_RANKER = [
         "ct702",
         "ct703",
@@ -30,20 +32,31 @@ class SearchRepository
     ];
     public function search($dataSearch)
     {
-        //$inventory  = !empty($dataSearch['inventory']) ? htmlspecialchars($dataSearch['inventory']) : self::ALL; // with swich case inventory
+        $inventory  = !empty($dataSearch['inventory']) ? htmlspecialchars($dataSearch['inventory']) : self::ALL;
         $keyword    = !empty($dataSearch['keyword']) ? htmlspecialchars($dataSearch['keyword']) : null;
         $price_min  = !empty($dataSearch['price_min']) ? (int)$dataSearch['price_min'] : self::MIN_PRICE;
         $price_max  = !empty($dataSearch['price_max']) ? (int)$dataSearch['price_max'] : self::MAX_PRICE;
         $category   = !empty($dataSearch['category']) ? $dataSearch['category'] : self::EMPTY;
         $body       = !empty($dataSearch['body']) ? $dataSearch['body'] : self::EMPTY;
         $size       = !empty($dataSearch['size']) ? $dataSearch['size'] : self::EMPTY;
-        $origin     = !empty($dataSearch['origin']) ? htmlspecialchars($dataSearch['origin']) : null;
+        $origin     = !empty($dataSearch['origin']) ? $dataSearch['origin'] : self::EMPTY;
         $type       = !empty($dataSearch['type']) ? $dataSearch['type'] : self::EMPTY;
         $vintage    = !empty($dataSearch['vintage']) ? $dataSearch['vintage'] : self::EMPTY;
         $ranker     = !empty($dataSearch['ranker']) ? $dataSearch['ranker'] : self::EMPTY;
         $db = DB::table('products AS p');
         $db->select('p.id as product', 'brand_code', 'ubrand_code', 'name', 'price', 'price_buy', 'price_tax', 'weight', 'vendor', 'origin', 'point', 'stock', 'image_big', 'image_small', 'is_display', 'p.created_at as created_at', 'p.updated_at as updated_at', 'p.deleted_at as deleted_at');
         $db->where('is_display', '!=', 'N');
+        //inventory
+        switch ($inventory) {
+            case self::INVENTORY_SOLD_OUT:
+                $db->where('stock', '<', 1);
+                break;
+            case self::INVENTORY_STOCKING:
+                $db->where('stock', '>', 0);
+                break;
+            default:
+                break;
+        }
         // keyword
         if (!is_null($keyword)) {
             $db->where(function ($query) use ($keyword) {
@@ -65,10 +78,10 @@ class SearchRepository
                 $andjoin->WhereIn('pc_category.category_code', $category);
             });
         }
-        if (!is_null($origin)) {
+        if (!empty($origin)) {
             $db->join('product_categories as pc_origin', function ($join) use ($origin) {
                 $andjoin = $join->on('p.id', '=', 'pc_origin.product_id');
-                $andjoin->where('pc_origin.category_code', '=', $origin);
+                $andjoin->WhereIn('pc_origin.category_code', $origin);
             });
         }
         if (!empty($type)) {

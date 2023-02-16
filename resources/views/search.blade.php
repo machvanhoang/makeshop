@@ -101,6 +101,13 @@
                     </header>
                     <main>
                         <div class="flex-type">
+                            <div class="item-checkbox">
+                                <label for="all-origin">
+                                    <input type="checkbox" name="all-origin" v-on:click="handleAllOrigin($event)"
+                                        value="all-origin" id="all-origin" class="custom-form-checkbox" />
+                                    <span>すべて</span>
+                                </label>
+                            </div>
                             <div v-for="(item, index) in listSearch.origin" class="list-origin">
                                 <div v-if="item.child" class="btn-open">
                                     <div class="block-button">
@@ -174,7 +181,7 @@
                                                     <div v-for="(item_child_lv2, index_child_lv2) in item_child.array_child"
                                                         class="item-checkbox">
                                                         <label v-bind:for="`type_${item_child_lv2.code}`">
-                                                            <input type="radio" name="origin"
+                                                            <input type="checkbox" name="origin"
                                                                 v-bind:value="item_child_lv2.code"
                                                                 v-model="arraySearch.origin"
                                                                 v-bind:id="`type_${item_child_lv2.code}`"
@@ -187,7 +194,7 @@
                                             <div v-else>
                                                 <div class="item-checkbox">
                                                     <label v-bind:for="`type_${item_child.code}`">
-                                                        <input type="radio" name="origin"
+                                                        <input type="checkbox" name="origin"
                                                             v-bind:value="item_child.code"
                                                             v-model="arraySearch.origin"
                                                             v-bind:id="`type_${item_child.code}`"
@@ -202,7 +209,7 @@
                                 <div v-else>
                                     <div class="item-checkbox">
                                         <label v-bind:for="`origin_${item.code}`">
-                                            <input type="radio" name="origin" v-bind:value="item.code"
+                                            <input type="checkbox" name="origin" v-bind:value="item.code"
                                                 v-model="arraySearch.origin" v-bind:id="`origin_${item.code}`"
                                                 class="custom-form-checkbox" />
                                             <span>@{{ item.name }}</span>
@@ -457,14 +464,32 @@
                     <main>
                         <div class="flex-type">
                             <div class="item-checkbox">
-                                <label for="inventory">
-                                    <input type="checkbox" name="inventory" checked id="inventory"
-                                        class="custom-form-checkbox" />
-                                    <span>在庫ありのみ</span>
+                                <label for="inventory-all">
+                                    <input type="radio" name="inventory" value="all" checked id="inventory-all"
+                                        class="custom-form-checkbox" v-model="arraySearch.inventory" />
+                                    <span>すべて</span>
+                                </label>
+                            </div>
+                            <div class="item-checkbox">
+                                <label for="inventory-stocking">
+                                    <input type="radio" name="inventory" value="stocking" id="inventory-stocking"
+                                        class="custom-form-checkbox" v-model="arraySearch.inventory" />
+                                    <span>ストッキング</span>
+                                </label>
+                            </div>
+                            <div class="item-checkbox">
+                                <label for="inventory-sold-out">
+                                    <input type="radio" name="inventory" value="sold-out" id="inventory-sold-out"
+                                        class="custom-form-checkbox" v-model="arraySearch.inventory" />
+                                    <span>在庫切れ</span>
                                 </label>
                             </div>
                         </div>
                     </main>
+                    <footer class="action-search">
+                        <button type="button" v-on:click="onSearch()" title="条件を変更">
+                            条件を変更</button>
+                    </footer>
                 </section>
             </div>
             <div class="main-search" ref="main-search">
@@ -485,14 +510,6 @@
                                     @{{ item.id }}
                                 </div>
                                 <div class="itemDetail">
-                                    <div class="iconArea">
-                                        <img src="https://www.shinanoya-tokyo.jp/images/common/iconM.gif"
-                                            alt="iconM">
-                                        <img src="https://www.shinanoya-tokyo.jp/shopimages/4708/iconAG.gif"
-                                            alt="iconAG">
-                                        <img src="https://www.shinanoya-tokyo.jp/shopimages/4708/iconAH.gif"
-                                            alt="iconAH">
-                                    </div>
                                     <h3 class="name">
                                         <a v-bind:href="getUrl(item.brand_code)" target="blank"
                                             v-html="item.name"></a>
@@ -539,7 +556,7 @@
                         price_min: MIN_PRICE,
                         price_max: MAX_PRICE,
                         category: [],
-                        origin: "",
+                        origin: [],
                         type: [],
                         body: [],
                         size: [],
@@ -568,6 +585,12 @@
                         return false;
                     }
                     this.getResultData(url);
+                    // offset top
+                    window.scrollTo({
+                        left: 0,
+                        top: 0,
+                        behavior: 'smooth'
+                    });
                 },
                 onFormatPrice() {
                     this.arraySearch.price_min = isNaN(parseFloat(this.$refs.price_min.value)) ? 0 : parseFloat(this
@@ -601,6 +624,10 @@
                 getUrl(slug = null) {
                     return `https://www.shinanoya-tokyo.jp/view/item/${slug}`;
                 },
+                handleAllOrigin(event) {
+                    let checked = event.target.checked;
+                    this.arraySearch.origin = allOrigin(checked);
+                },
                 checkBody() {
                     let list_body = this.listSearch.body;
                     this.power_min = parseInt(this.$refs.power_min.value);
@@ -613,13 +640,6 @@
                         }
                     });
                     return array_power;
-                },
-                _console() {
-                    console.log('START___console ____START');
-                    console.log('__arraySearch =', this.arraySearch);
-                    console.log('__power_min', this.power_min);
-                    console.log('__power_max', this.power_max);
-                    console.log('END___console ____END');
                 },
                 async getResultData(url = DEFAULT_PAGE) {
                     this.loader = true;
@@ -641,7 +661,6 @@
                                 this.current_page = products.current_page;
                                 this.dataItems = products.data;
                                 this.loader = false;
-                                this._console();
                             });
                     } catch (error) {
                         console.error(error);
