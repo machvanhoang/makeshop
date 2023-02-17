@@ -24,7 +24,7 @@
                 @endif
                 <div class="card">
                     <div class="card-header d-flex justify-content-between align-item-center pt-2 pb-2">
-                        <h5 class="p-0 m-0">1. Import Category</h5>
+                        <h5 class="p-0 m-0">1. 商品カテゴリ情報をcsvで登録</h5>
                         <a href="{{ asset('/video/video-category.mp4') }}" target="blank"
                             class="m-0 p-0 d-flex justify-content-between align-item-center text-decoration-none"><span><svg
                                     xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
@@ -36,7 +36,7 @@
                                 </svg></span> &nbsp;&nbsp;ビデオチュートリアル</a>
                     </div>
                     <div class="card-body">
-                        <form action="{{ route('import.category') }}" role="form" method="POST"
+                        <form action="{{ route('import.product-category') }}" role="form" method="POST"
                             enctype="multipart/form-data">
                             @csrf
                             <div class="mb-3">

@@ -52,7 +52,7 @@
                                             {{ old('remember') ? 'checked' : '' }}>
 
                                         <label class="form-check-label" for="remember">
-                                            {{ __('私を覚えてますか') }}
+                                            {{ __('ログイン状態を保存する') }}
                                         </label>
                                     </div>
                                 </div>

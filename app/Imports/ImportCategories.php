@@ -2,15 +2,15 @@
 
 namespace App\Imports;
 
-use App\Models\ProductCategories;
-use App\Models\Products;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\WithValidation;
 use Maatwebsite\Excel\Imports\HeadingRowFormatter;
+use App\Models\Categories;
 
 HeadingRowFormatter::default('none');
+
 class ImportCategories implements ToModel, WithValidation, WithHeadingRow
 {
     use Importable;
@@ -18,22 +18,22 @@ class ImportCategories implements ToModel, WithValidation, WithHeadingRow
     {
         $data = [];
         $data['category_code'] = $row['カテゴリー識別コード'];
-        $data['brand_code_format'] = (int)$row['システム商品コード'];
-        $singleProduct = Products::select('id')->whereBrandCodeFormat($data['brand_code_format'])->first();
-        if (!empty($singleProduct)) {
-            $productCategory = ProductCategories::where([
+        $data['name'] = $row['カテゴリー名'];
+        $data['path'] = $row['親カテゴリーパス'];
+        $singleCategory = Categories::select('id')->whereCategoryCode($data['category_code'])->first();
+        if (empty($singleCategory)) {
+            $singleCategory =  Categories::create([
                 'category_code'     => $data['category_code'],
-                'product_id'    => $singleProduct->id,
-            ])->first();
-            if (empty($productCategory)) {
-                $productCategory =  ProductCategories::create([
-                    'category_code'     => $data['category_code'],
-                    'product_id'    => $singleProduct->id,
-                ]);
-            }
-            return $productCategory;
+                'name'    => $data['name'],
+                'path'    => $data['path'],
+            ]);
+        } else {
+            $singleCategory->category_code = $data['category_code'];
+            $singleCategory->name = $data['name'];
+            $singleCategory->path = $data['path'];
+            $singleCategory->save();
         }
-        return null;
+        return $singleCategory;
     }
 
     public function rules(): array

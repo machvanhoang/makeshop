@@ -12,6 +12,7 @@ class Products extends Model
     use HasFactory;
     use SoftDeletes;
     protected $fillable = [
+        'breadcrumb',
         'brand_code_format',
         'brand_code',
         'ubrand_code',
@@ -28,7 +29,7 @@ class Products extends Model
         'is_display',
         'price_tax'
     ];
-    public function categories()
+    public function ProductCategories()
     {
         return $this->hasMany(ProductCategories::class, 'product_id', 'id');
     }

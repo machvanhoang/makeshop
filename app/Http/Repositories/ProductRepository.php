@@ -9,7 +9,10 @@ class ProductRepository
     public const PAGINATE = 52;
     public function search($keyword = '', $orderBy = 'DESC')
     {
-        $products = Products::with('categories');
+        $products = Products::with(['ProductCategories' => function ($query) {
+            $query = $query->with('Category');
+            return $query;
+        }]);
         $products->where('is_display', '!=', 'N');
         if ($keyword != '') {
             $products->where('name', 'LIKE', '%' . $keyword . '%');

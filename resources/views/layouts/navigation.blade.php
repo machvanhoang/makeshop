@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
     <div class="container">
-        <a class="navbar-brand" href="{{ url('/') }}">
+        <a class="navbar-brand" href="@guest {{ url('/') }} @else {{ route('home') }} @endguest">
             <img src="https://allgrow-labo.jp/vn/images/company/logo_agLabo.svg" width="200" height="32"
                 alt="Logo">
         </a>
@@ -16,15 +16,22 @@
                         <a class="nav-link" href="{{ route('product.index') }}"
                             title="{{ __('製品一覧') }}">{{ __('製品一覧') }}</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('category.index') }}"
+                            title="{{ __('カテゴリー') }}">{{ __('カテゴリー') }}</a>
+                    </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarImport" role="button"
                             data-bs-toggle="dropdown" aria-expanded="false">
                             商品
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarImport">
-                            <a class="dropdown-item" href="{{ route('import.product') }}" title="製品のインポート カテゴリ">商品の輸入</a>
-                            <a class="dropdown-item" href="{{ route('import.category') }}" title="製品のインポート カテゴリ">製品のインポート
-                                カテゴリ</a>
+                            <a class="dropdown-item" href="{{ route('import.product') }}"
+                                title="商品情報をcsvで登録">商品情報をcsvで登録</a>
+                            <a class="dropdown-item" href="{{ route('import.category') }}" title="Import Category">Import
+                                Category</a>
+                            <a class="dropdown-item" href="{{ route('import.product-category') }}"
+                                title="商品カテゴリ情報をcsvで登録">商品カテゴリ情報をcsvで登録</a>
                         </ul>
                     </li>
                 @endguest

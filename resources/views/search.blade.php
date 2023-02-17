@@ -16,6 +16,7 @@
         const API = 'https://makeshop_tool.local';
         const DEFAULT_PAGE = `${API}/api/product/search?page=1`;
     </script>
+    <script src="{{ asset('/makeshop/totalCategory.js') }}"></script>
     <script src="https://code.jquery.com/jquery-3.6.2.min.js"
         integrity="sha256-2krYZKh//PcchRtd+H+VyyQoZ/e3EcrkxhM8ycwASPA=" crossorigin="anonymous"></script>
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
@@ -45,6 +46,15 @@
         </div>
         <div class="container-search">
             <div class="siderbar-search">
+                <section class="box-checked-categories">
+                    <div>
+                        <ul class="category-checked">
+                            <li v-for="(item, index) in categories">
+                                <span>@{{ item.name }}</span>
+                            </li>
+                        </ul>
+                    </div>
+                </section>
                 <section class="box-search" id="search_price">
                     <header>
                         <div class="title-header">
@@ -467,7 +477,7 @@
                                 <label for="inventory-all">
                                     <input type="radio" name="inventory" value="all" checked id="inventory-all"
                                         class="custom-form-checkbox" v-model="arraySearch.inventory" />
-                                    <span>すべて</span>
+                                    <span>在庫がある商品を表示</span>
                                 </label>
                             </div>
                             <div class="item-checkbox">
@@ -475,13 +485,6 @@
                                     <input type="radio" name="inventory" value="stocking" id="inventory-stocking"
                                         class="custom-form-checkbox" v-model="arraySearch.inventory" />
                                     <span>ストッキング</span>
-                                </label>
-                            </div>
-                            <div class="item-checkbox">
-                                <label for="inventory-sold-out">
-                                    <input type="radio" name="inventory" value="sold-out" id="inventory-sold-out"
-                                        class="custom-form-checkbox" v-model="arraySearch.inventory" />
-                                    <span>在庫切れ</span>
                                 </label>
                             </div>
                         </div>
@@ -568,7 +571,8 @@
                     links: [],
                     current_page: 1,
                     submit: true,
-                    totalProduct: 0
+                    totalProduct: 0,
+                    categories: []
                 }
             },
             mounted() {
@@ -654,13 +658,16 @@
                                     result
                                 } = response.data;
                                 const {
-                                    products
+                                    products,
+                                    totalCategory
                                 } = result;
                                 this.links = products.links;
                                 this.totalProduct = products.total;
                                 this.current_page = products.current_page;
                                 this.dataItems = products.data;
+                                this.categories = getCheckedCategory(totalCategory);
                                 this.loader = false;
+                                console.log('totalCategory', this.categories);
                             });
                     } catch (error) {
                         console.error(error);

@@ -1,11 +1,12 @@
 <?php
-
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\ProductController;
-use App\Http\Controllers\HomeController;
-use App\Http\Controllers\Import\ImportCategoriesController;
+use App\Http\Controllers\CategoriesController;
 use App\Http\Controllers\Import\ImportProductController;
+use App\Http\Controllers\Import\ImportCategoriesController;
+use App\Http\Controllers\Import\ImportProductCategoriesController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -43,11 +44,23 @@ Route::group(
 Route::group(
     [
         'middleware' => ['auth'],
+        'prefix' => 'category',
+        'as' => 'category.'
+    ],
+    function () {
+        Route::get('/', [CategoriesController::class, 'index'])->name('index');
+    }
+);
+
+Route::group(
+    [
+        'middleware' => ['auth'],
         'prefix' => 'import',
         'as' => 'import.'
     ],
     function () {
         Route::match(['get', 'post'], '/product', [ImportProductController::class, 'index'])->name('product');
         Route::match(['get', 'post'], '/category', [ImportCategoriesController::class, 'index'])->name('category');
+        Route::match(['get', 'post'], '/product-category', [ImportProductCategoriesController::class, 'index'])->name('product-category');
     }
 );

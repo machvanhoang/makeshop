@@ -59,7 +59,7 @@
                     <div class="card-header">{{ __('ダッシュボード') }}</div>
 
                     <div class="card-body">
-                        <form method="GET" role="form" action="{{ route('product.index') }}">
+                        <form method="GET" role="form" action="{{ route('category.index') }}">
                             <div class="d-flex justify-content-start">
                                 <div class="form-group">
                                     <input type="text" name="keyword" class="form-control" value="{{ $keyword }}"
@@ -80,54 +80,32 @@
                                 <tr>
                                     <th>#</th>
                                     <th>名前</th>
-                                    <th>画像</th>
-                                    <th>価格</th>
-                                    <th>ブランドコード</th>
                                     <th>カテゴリー</th>
-                                    <th>スターテス</th>
+                                    <th>道</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($products as $key => $product)
+                                @foreach ($categories as $key => $category)
                                     <tr>
                                         <td scope="row">{{ $key + 1 }}</td>
                                         <td>
                                             <h3 class="trundcat">
-                                                {{ $product->name }}
+                                                {{ $category->name }}
                                             </h3>
                                         </td>
                                         <td>
-                                            <img width="50" height="50"
-                                                src="https://makeshop-multi-images.akamaized.net/4708/itemimages/{{ $product->image_big }}"
-                                                alt="{{ $product->name }}" />
+                                            <span
+                                                class="badge badge-pill badge-success">{{ $category->category_code }}<span>
                                         </td>
                                         <td>
-                                            {{ $product->price }}
-                                        </td>
-                                        <td>
-                                            {{ $product->brand_code }}
-                                        </td>
-                                        <td>
-                                            @if ($product->ProductCategories->count())
-                                                @foreach ($product->ProductCategories as $category)
-                                                    <span
-                                                        class="badge badge-pill badge-success">{{ $category->Category->category_code }}</span>
-                                                @endforeach
-                                            @endif
-                                        </td>
-                                        <td>
-                                            @if ($product->is_display != 'N')
-                                                <span class="badge badge-pill badge-success">画面</span>
-                                            @else
-                                                <span class="badge badge-secondary badge-success">隠れる</span>
-                                            @endif
+                                            {{ $category->path }}
                                         </td>
                                     </tr>
                                 @endforeach
                             </tbody>
                         </table>
                         <div class="nav-paginate">
-                            {{ $products->links('layouts.paginate') }}
+                            {{ $categories->links('layouts.paginate') }}
                         </div>
                     </div>
                 </div>

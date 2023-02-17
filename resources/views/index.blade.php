@@ -18,7 +18,7 @@
             @auth
                 <a href="{{ url('/home') }}" class="btn btn-warning text-sm">家に帰る</a>
             @else
-                <a href="{{ route('login') }}" class="btn btn-warning text-sm">ログイン管理ページ</a>
+                <a href="{{ route('login') }}" class="btn btn-warning text-sm">TOPへ戻る</a>
             @endauth
         </div>
     @endif

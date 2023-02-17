@@ -17,6 +17,7 @@ class ImportProducts implements ToModel, WithValidation, WithHeadingRow
     public function model(array $row)
     {
         $data = [];
+        $data['breadcrumb'] = $row['カテゴリー'];
         $data['brand_code'] = str_replace(['="', '"'], "", $row['商品コード']);
         $data['brand_code_format'] = (int)$data['brand_code'];
         $data['ubrand_code'] = str_replace(['="', '"'], "", $row['独自商品コード']);
@@ -41,6 +42,7 @@ class ImportProducts implements ToModel, WithValidation, WithHeadingRow
     }
     private function updateProduct($product, $item)
     {
+        $product->breadcrumb = $item['breadcrumb'];
         $product->brand_code = $item['brand_code'];
         $product->brand_code_format = (int)$item['brand_code'];
         $product->ubrand_code = $item['ubrand_code'];
