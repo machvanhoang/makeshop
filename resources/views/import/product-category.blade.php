@@ -25,7 +25,7 @@
                 <div class="card">
                     <div class="card-header d-flex justify-content-between align-item-center pt-2 pb-2">
                         <h5 class="p-0 m-0">1. 商品カテゴリ情報をcsvで登録</h5>
-                        <a href="{{ asset('/video/video-category.mp4') }}" target="blank"
+                        <a href="{{ asset('/video/video-product-category.mp4') }}" target="blank"
                             class="m-0 p-0 d-flex justify-content-between align-item-center text-decoration-none"><span><svg
                                     xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                     class="bi bi-download" viewBox="0 0 16 16">
