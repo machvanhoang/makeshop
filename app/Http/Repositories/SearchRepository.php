@@ -151,12 +151,6 @@ class SearchRepository
         $products = $db->paginate(52);
         return [
             'products' => $products,
-            'search' => [
-                $vintage,
-                $ranker,
-                $size,
-                $sql
-            ],
             'totalCategory' => $totalCategory
         ];
     }
