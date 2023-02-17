@@ -445,7 +445,7 @@
                         <button v-on:click="onSearch()" type="button" title="条件を変更"> 条件を変更</button>
                     </footer>
                 </section>
-                <section class="box-search" id="production_keyword">
+                <section style="display: none !important" class="box-search" id="production_keyword">
                     <header>
                         <div class="title-header">
                             <h2>キーワード</h2>

@@ -29,6 +29,7 @@ class ImportProductCategories implements ToModel, WithValidation, WithHeadingRow
             ])->first();
             if (empty($productCategory)) {
                 $productCategory =  ProductCategories::create([
+                    'category_code'    => $data['category_code'],
                     'category_id'     => $singleCategory->id,
                     'product_id'    => $singleProduct->id,
                 ]);
