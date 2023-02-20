@@ -677,90 +677,17 @@
     }
 }
 
-/** ranger */
-#noUiSlider {
-    .noUi-connect {
-        background: #ebebeb;
-        box-shadow: none;
-        border: none;
-    }
+.rest-setting {
+    cursor: pointer;
 
-    input {
-        width: 90px;
-        padding: 8px;
-        transition: border, box-shadow linear 0.1s;
-        -webkit-transition: border, box-shadow linear 0.1s;
-        -moz-transition: border, box-shadow linear 0.1s;
-        font-size: 12px;
-        box-sizing: border-box;
-    }
-
-    input[type="number"] {
-        border: 1px solid #acacac;
-        border-radius: 5px;
-    }
-
-    input::placeholder {
-        color: #d4d4d4;
+    svg {
+        height: 16px;
+        width: 16px;
+        position: relative;
+        top: 4px;
     }
 
     span {
-        font-size: 10px;
-    }
-
-    .noUi-horizontal {
-        height: 8px;
-    }
-
-    .noUi-target {
-        border-radius: 0;
-        border: none;
-        box-shadow: none;
-        margin: 20px 0;
-        width: 97%;
-    }
-
-    .noUi-handle {
-
-        &::before,
-        &::after {
-            display: none;
-        }
-
-        width: 20px;
-        height: 20px;
-        left: -2px;
-        top: -6px;
-        border-radius: 50%;
-    }
-
-    .noUi-pips {
-        display: none;
-    }
-
-    .control {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        display: none;
-    }
-
-    .noUi-handle {
-        width: 20px;
-        height: 20px;
-        left: -2px;
-        top: -6px;
-        border-radius: 50%;
-        cursor: pointer;
-    }
-
-    .body-number {
-        display: flex;
-        justify-content: space-between;
-        margin-bottom: 20px;
-
-        span {
-            font-size: 15px;
-        }
+        font-size: 50%;
     }
 }

@@ -103,7 +103,6 @@ class SearchRepository
         if (!empty($origin)) {
             $db->join('product_categories as pc_origin', function ($join) use ($origin) {
                 $andjoin = $join->on('p.id', '=', 'pc_origin.product_id');
-                $andjoin->where('pc_origin.category_code', '=', $origin);
                 $andjoin->WhereIn('pc_origin.category_code', $origin);
             });
         }

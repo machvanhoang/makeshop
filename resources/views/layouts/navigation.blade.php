@@ -28,7 +28,7 @@
                         <ul class="dropdown-menu" aria-labelledby="navbarImport">
                             <a class="dropdown-item" href="{{ route('import.product') }}"
                                 title="商品情報をcsvで登録">商品情報をcsvで登録</a>
-                            <a class="dropdown-item" href="{{ route('import.category') }}" title="CSVのカテゴリー情報を登録">CSVのカテゴリー情報を登録</a>
+                            <a class="dropdown-item" href="{{ route('import.category') }}" title="CSVのカテゴリー情報を登録">テゴリー情報を登録</a>
                             <a class="dropdown-item" href="{{ route('import.product-category') }}"
                                 title="商品カテゴリ情報をcsvで登録">商品カテゴリ情報をcsvで登録</a>
                         </ul>

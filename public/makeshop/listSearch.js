@@ -780,3 +780,14 @@ function allOrigin(checked) {
   });
   return new_Origin;
 }
+function allBody(checked) {
+  let new_Body = [];
+  if (!checked) {
+    return new_Body;
+  }
+  const __all_body = getBody();
+  __all_body.forEach(item => {
+    new_Body.push(item.code);
+  });
+  return new_Body;
+}

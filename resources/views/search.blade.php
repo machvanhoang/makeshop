@@ -52,6 +52,16 @@
                             <li v-for="(item, index) in categories">
                                 <span>@{{ item.name }}</span>
                             </li>
+                            <li v-if="categories.length > 0">
+                                <span class="rest-setting" v-on:click="resetSetting()">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                        fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
+                                        <path
+                                            d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
+                                    </svg>
+                                    すべての条件を削除します
+                                </span>
+                            </li>
                         </ul>
                     </div>
                 </section>
@@ -418,31 +428,33 @@
                         <button type="button" v-on:click="onSearch()"> 条件を変更</button>
                     </footer>
                 </section>
-                <section class="box-search" id="production_body">
+                <section class="box-search" id="search_body">
                     <header>
                         <div class="title-header">
-                            <h2>ボディ</h2>
+                            <h2>味わいから探す</h2>
                         </div>
                     </header>
                     <main>
-                        <div id="noUiSlider">
-                            <div id="range"></div>
-                            <div class="body-number">
-                                <span>1</span>
-                                <span>2</span>
-                                <span>3</span>
+                        <div class="flex-type">
+                            <div class="item-checkbox">
+                                <label for="body-all">
+                                    <input type="checkbox" name="body-all" v-on:click="handleAllBody($event)"
+                                        value="body-all" id="body-all" class="custom-form-checkbox" />
+                                    <span>すべて</span>
+                                </label>
                             </div>
-                            <div class="control">
-                                <input type="number" name="power_min" value="1" id="power_min" max="3"
-                                    min="1" ref="power_min" placeholder="1">
-                                <span> から </span>
-                                <input type="number" name="power_max" value="3" id="power_max" max="3"
-                                    min="1" ref="power_max" placeholder="3">
+                            <div v-for="(item, index) in listSearch.body" class="item-checkbox">
+                                <label v-bind:for="`body_${item.id}`">
+                                    <input type="checkbox" name="body[]" v-model="arraySearch.body"
+                                        :value="item.code" v-bind:id="`body_${item.id}`"
+                                        class="custom-form-checkbox" />
+                                    <span>@{{ item.name }}</span>
+                                </label>
                             </div>
                         </div>
                     </main>
                     <footer class="action-search">
-                        <button v-on:click="onSearch()" type="button" title="条件を変更"> 条件を変更</button>
+                        <button type="button" v-on:click="onSearch()" title="条件を変更"> 条件を変更</button>
                     </footer>
                 </section>
                 <section style="display: none !important" class="box-search" id="production_keyword">
@@ -474,17 +486,17 @@
                     <main>
                         <div class="flex-type">
                             <div class="item-checkbox">
-                                <label for="inventory-all">
-                                    <input type="radio" name="inventory" value="all" checked id="inventory-all"
+                                <label for="inventory-stocking">
+                                    <input type="radio" name="inventory" value="stocking" id="inventory-stocking"
                                         class="custom-form-checkbox" v-model="arraySearch.inventory" />
                                     <span>在庫がある商品を表示</span>
                                 </label>
                             </div>
                             <div class="item-checkbox">
-                                <label for="inventory-stocking">
-                                    <input type="radio" name="inventory" value="stocking" id="inventory-stocking"
+                                <label for="inventory-all">
+                                    <input type="radio" name="inventory" value="all" checked id="inventory-all"
                                         class="custom-form-checkbox" v-model="arraySearch.inventory" />
-                                    <span>ストッキング</span>
+                                    <span>在庫が無い商品も表示</span>
                                 </label>
                             </div>
                         </div>
@@ -496,9 +508,7 @@
                 </section>
             </div>
             <div class="main-search" ref="main-search">
-                <div class="total-search mb-2 ps-3">
-                    ページ @{{ current_page }} <span id="total" ref="total"
-                        name="total"><b>@{{ dataItems.length }}</b> の @{{ totalProduct }}</span> 個の製品が見つかりました
+                <div class="total-search mb-2 ps-3">&nbsp;&nbsp;&nbsp;&nbsp;@{{ totalProduct }}</span> 個の製品が見つかりました
                 </div>
                 <div class="result-search">
                     <div class="product-wrap">
@@ -542,8 +552,6 @@
         const ALL = "all";
         const MIN_PRICE = 0;
         const MAX_PRICE = 1000000;
-        const POWER_MIN = 1;
-        const POWER_MAX = 3;
         const DEFAULT_SIZE = getSize()[0]['codes'];
         const DEFAULT_RANKER = getRanker()[0]['codes'];
         const DEFAULT_VINTAGE = getVintage()[0]['codes'];
@@ -553,8 +561,6 @@
                     dataItems: [],
                     listSearch: [],
                     loader: false,
-                    power_min: POWER_MIN,
-                    power_max: POWER_MAX,
                     arraySearch: {
                         price_min: MIN_PRICE,
                         price_max: MAX_PRICE,
@@ -608,7 +614,6 @@
                     this.loader = loader;
                     this.onFormatPrice();
                     this.arraySearch.keyword = this.$refs.keyword.value;
-                    this.arraySearch.body = this.checkBody();
                     this.loader = false;
                     this.getResultData();
                     // offset top
@@ -622,6 +627,23 @@
                     let val = (value / 1).toFixed(0).replace('.', ',')
                     return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
                 },
+                resetSetting() {
+                    this.arraySearch = {
+                        price_min: MIN_PRICE,
+                        price_max: MAX_PRICE,
+                        category: [],
+                        origin: [],
+                        type: [],
+                        body: [],
+                        size: [],
+                        vintage: [],
+                        ranker: [],
+                        keyword: "",
+                        inventory: ALL,
+                    };
+                    this.categories = [];
+                    this.onSearch();
+                },
                 getImage(image = null) {
                     return `https://makeshop-multi-images.akamaized.net/4708/itemimages/${image}`;
                 },
@@ -632,18 +654,9 @@
                     let checked = event.target.checked;
                     this.arraySearch.origin = allOrigin(checked);
                 },
-                checkBody() {
-                    let list_body = this.listSearch.body;
-                    this.power_min = parseInt(this.$refs.power_min.value);
-                    this.power_max = parseInt(this.$refs.power_max.value);
-                    let array_power = [];
-                    list_body.forEach((item_list, index_list) => {
-                        let power = parseInt(item_list.power);
-                        if (this.power_min <= power && power <= this.power_max) {
-                            array_power.push(item_list.code);
-                        }
-                    });
-                    return array_power;
+                handleAllBody(event) {
+                    let checked = event.target.checked;
+                    this.arraySearch.body = allBody(checked);
                 },
                 async getResultData(url = DEFAULT_PAGE) {
                     this.loader = true;
@@ -676,11 +689,6 @@
                 },
                 async getListSearch() {
                     this.listSearch = listSearch();
-                    let list_body = [];
-                    this.listSearch.body.forEach((item, index) => {
-                        list_body.push(item.code);
-                    });
-                    this.arraySearch.body = list_body;
                 }
             },
             created() {
@@ -688,43 +696,6 @@
                 this.getResultData();
             }
         }).mount('#appRoot');
-    </script>
-    <script>
-        var $slider = $('#range').get(0);
-        var $min = $('#power_min');
-        var $max = $('#power_max');
-        var minVal = POWER_MIN;
-        var maxVal = POWER_MAX;
-        var gap = 1;
-        noUiSlider.create($slider, {
-            start: [minVal, maxVal],
-            connect: true,
-            step: gap,
-            range: {
-                'min': minVal,
-                'max': maxVal
-            },
-            pips: {
-                mode: 'range',
-                density: gap
-            }
-        });
-        $slider.noUiSlider.on('update', function(values, handle) {
-            var value = Math.floor(values[handle]);
-            if (handle) {
-                $max.get(0).value = value;
-            } else {
-                $min.get(0).value = value;
-            }
-            $('.noUi-value-large').text(minVal);
-            $('.noUi-value-large:last-child').text(maxVal);
-        });
-        $min.get(0).addEventListener('change', function() {
-            $slider.noUiSlider.set([this.value, null]);
-        });
-        $max.get(0).addEventListener('change', function() {
-            $slider.noUiSlider.set([null, this.value]);
-        });
     </script>
 </body>
 

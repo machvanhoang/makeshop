@@ -81,7 +81,7 @@
                                     <th>#</th>
                                     <th>名前</th>
                                     <th>カテゴリー</th>
-                                    <th>道</th>
+                                    <th>ルート</th>
                                 </tr>
                             </thead>
                             <tbody>
