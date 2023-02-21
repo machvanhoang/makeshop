@@ -135,7 +135,6 @@ class SearchRepository
         if (!empty($size)) {
             $db->join('product_categories as pc_size', function ($join) use ($size) {
                 $andjoin = $join->on('p.id', '=', 'pc_size.product_id');
-                $andjoin->WhereIn('pc_size.category_code', $size);
                 if ($size[0] == self::ALL) {
                     $andjoin->WhereIn('pc_size.category_code', self::DEFAULT_SIZE);
                 } else {

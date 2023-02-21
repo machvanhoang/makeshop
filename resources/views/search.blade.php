@@ -123,8 +123,9 @@
                         <div class="flex-type">
                             <div class="item-checkbox">
                                 <label for="all-origin">
-                                    <input type="checkbox" name="all-origin" v-on:click="handleAllOrigin($event)"
-                                        value="all-origin" id="all-origin" class="custom-form-checkbox" />
+                                    <input type="checkbox" ref="origin_all" name="all-origin"
+                                        v-on:click="handleAllOrigin($event)" value="all-origin" id="all-origin"
+                                        class="custom-form-checkbox" />
                                     <span>すべて</span>
                                 </label>
                             </div>
@@ -436,18 +437,19 @@
                     </header>
                     <main>
                         <div class="flex-type">
-                            <div class="item-checkbox">
+                            <div v-if="checking.body" class="item-checkbox">
                                 <label for="body-all">
-                                    <input type="checkbox" name="body-all" v-on:click="handleAllBody($event)"
-                                        value="body-all" id="body-all" class="custom-form-checkbox" />
+                                    <input type="checkbox" ref="body_all" name="body-all"
+                                        v-on:click="handleAllBody($event)" value="body-all" id="body-all"
+                                        class="custom-form-checkbox" />
                                     <span>すべて</span>
                                 </label>
                             </div>
                             <div v-for="(item, index) in listSearch.body" class="item-checkbox">
-                                <label v-bind:for="`body_${item.id}`">
-                                    <input type="checkbox" name="body[]" v-model="arraySearch.body"
-                                        :value="item.code" v-bind:id="`body_${item.id}`"
-                                        class="custom-form-checkbox" />
+                                <label v-if="showItemBody(item.parent)" v-bind:for="`body_${item.id}`">
+                                    <input v-if="checking.body" type="checkbox" name="body[]"
+                                        v-model="arraySearch.body" :value="item.code"
+                                        v-bind:id="`body_${item.id}`" class="custom-form-checkbox" />
                                     <span>@{{ item.name }}</span>
                                 </label>
                             </div>
@@ -555,9 +557,11 @@
         const DEFAULT_SIZE = getSize()[0]['codes'];
         const DEFAULT_RANKER = getRanker()[0]['codes'];
         const DEFAULT_VINTAGE = getVintage()[0]['codes'];
+        const DEFAULT_BODY_HIDDEN_BUTTON_ALL = ["ct636", "ct637", "ct642"];
         createApp({
             data() {
                 return {
+                    defaultBodyHidden: ["ct636", "ct637", "ct642"],
                     dataItems: [],
                     listSearch: [],
                     loader: false,
@@ -578,7 +582,10 @@
                     current_page: 1,
                     submit: true,
                     totalProduct: 0,
-                    categories: []
+                    categories: [],
+                    checking: {
+                        body: true
+                    }
                 }
             },
             mounted() {
@@ -595,12 +602,41 @@
                         return false;
                     }
                     this.getResultData(url);
-                    // offset top
                     window.scrollTo({
                         left: 0,
                         top: 0,
                         behavior: 'smooth'
                     });
+                },
+                showItemBody(parent) {
+                    const isShow = this.showCheckboxAllBody();
+                    if (!isShow) {
+                        const categories = this.arraySearch.category;
+                        let isShow = false;
+                        categories.forEach(item => {
+                            if (item === parent) {
+                                isShow = true;
+                                return true;
+                            }
+                        });
+                        return isShow;
+                    }
+                    return true;
+                },
+                showCheckboxAllBody() {
+                    const categories = this.arraySearch.category;
+                    let check = true;
+                    if (categories.length > 0) {
+                        categories.forEach(item => {
+                            if (DEFAULT_BODY_HIDDEN_BUTTON_ALL.includes(item)) {
+                                check = false;
+                            }
+                            if (!check) {
+                                return check;
+                            }
+                        });
+                    }
+                    return check;
                 },
                 onFormatPrice() {
                     this.arraySearch.price_min = isNaN(parseFloat(this.$refs.price_min.value)) ? 0 : parseFloat(this
@@ -616,12 +652,15 @@
                     this.arraySearch.keyword = this.$refs.keyword.value;
                     this.loader = false;
                     this.getResultData();
-                    // offset top
+
                     window.scrollTo({
                         left: 0,
                         top: 0,
                         behavior: 'smooth'
                     });
+                    this.checking = {
+                        body: true
+                    };
                 },
                 formatPrice(value) {
                     let val = (value / 1).toFixed(0).replace('.', ',')
@@ -642,6 +681,8 @@
                         inventory: ALL,
                     };
                     this.categories = [];
+                    this.$refs.body_all.checked = false;
+                    this.$refs.origin_all.checked = false;
                     this.onSearch();
                 },
                 getImage(image = null) {
@@ -680,11 +721,11 @@
                                 this.dataItems = products.data;
                                 this.categories = getCheckedCategory(totalCategory);
                                 this.loader = false;
-                                console.log('totalCategory', this.categories);
+                                this.checking.body = this.showCheckboxAllBody();
                             });
                     } catch (error) {
-                        console.error(error);
                         this.loader = true;
+                        console.error(error);
                     }
                 },
                 async getListSearch() {
@@ -694,7 +735,12 @@
             created() {
                 this.getListSearch();
                 this.getResultData();
-            }
+            },
+            watch: {
+                "arraySearch.category": function(newValue, oldValue) {
+                    this.checking.body = this.showCheckboxAllBody();
+                }
+            },
         }).mount('#appRoot');
     </script>
 </body>
