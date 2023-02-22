@@ -447,9 +447,9 @@
                             </div>
                             <div v-for="(item, index) in listSearch.body" class="item-checkbox">
                                 <label v-if="showItemBody(item.parent)" v-bind:for="`body_${item.id}`">
-                                    <input v-if="checking.body" type="checkbox" name="body[]"
-                                        v-model="arraySearch.body" :value="item.code"
-                                        v-bind:id="`body_${item.id}`" class="custom-form-checkbox" />
+                                    <input type="checkbox" name="body[]" v-model="arraySearch.body"
+                                        :value="item.code" v-bind:id="`body_${item.id}`"
+                                        class="custom-form-checkbox" />
                                     <span>@{{ item.name }}</span>
                                 </label>
                             </div>
@@ -557,11 +557,10 @@
         const DEFAULT_SIZE = getSize()[0]['codes'];
         const DEFAULT_RANKER = getRanker()[0]['codes'];
         const DEFAULT_VINTAGE = getVintage()[0]['codes'];
-        const DEFAULT_BODY_HIDDEN_BUTTON_ALL = ["ct636", "ct637", "ct642"];
+        const DEFAULT_BODY_HIDDEN_BUTTON_ALL = ["ct636", "ct637", "ct639", "ct640", "ct642"];
         createApp({
             data() {
                 return {
-                    defaultBodyHidden: ["ct636", "ct637", "ct642"],
                     dataItems: [],
                     listSearch: [],
                     loader: false,
@@ -614,7 +613,7 @@
                         const categories = this.arraySearch.category;
                         let isShow = false;
                         categories.forEach(item => {
-                            if (item === parent) {
+                            if (parent.includes(item)) {
                                 isShow = true;
                                 return true;
                             }
@@ -626,6 +625,11 @@
                 showCheckboxAllBody() {
                     const categories = this.arraySearch.category;
                     let check = true;
+                    // ct641 甘口ワイン
+                    // ct1171 低アルコール
+                    if (categories.includes("ct641") || categories.includes("ct1171")) {
+                        return check;
+                    }
                     if (categories.length > 0) {
                         categories.forEach(item => {
                             if (DEFAULT_BODY_HIDDEN_BUTTON_ALL.includes(item)) {

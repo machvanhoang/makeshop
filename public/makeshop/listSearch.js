@@ -541,42 +541,60 @@ function getBody() {
       "name": "ピュア【スパークリングワイン】",
       "code": "ct1278",
       "power": 1,
-      "parent": "ct642"
+      "parent": [
+        "ct639",
+        "ct642"
+      ]
     },
     {
       "id": 2,
       "name": "ハーモニー【スパークリングワイン】",
       "code": "ct1279",
       "power": 2,
-      "parent": "ct642"
+      "parent": [
+        "ct639",
+        "ct642"
+      ]
     },
     {
       "id": 3,
       "name": "リッチ【スパークリングワイン】",
       "code": "ct1280",
       "power": 3,
-      "parent": "ct642"
+      "parent": [
+        "ct639",
+        "ct642"
+      ]
     },
     {
       "id": 4,
       "name": "軽やか【白ワイン】",
       "code": "ct1281",
       "power": 1,
-      "parent": "ct637"
+      "parent": [
+        "ct637",
+        "ct640"
+      ]
     },
     {
       "id": 5,
       "name": "軽コク【白ワイン】",
       "code": "ct1282",
       "power": 2,
-      "parent": "ct637"
+      "parent": [
+        "ct637",
+        "ct640"
+      ]
     },
     {
       "id": 6,
       "name": "コク旨【白ワイン】",
       "code": "ct1283",
       "power": 3,
-      "parent": "ct637"
+      "parent": [
+        "ct637",
+        "ct640"
+      ]
     },
     {
       "id": 7,
