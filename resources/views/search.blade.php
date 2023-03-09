@@ -11,6 +11,7 @@
     <link rel="stylesheet" type="text/css"
         href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/9.0.0/nouislider.min.css">
     <link rel="stylesheet" href="{{ asset('/makeshop/style.css') }}">
+    <link rel="stylesheet" href="https://gigaplus.makeshop.jp/2448/lib/css/wine-creator.css">
     <script src="{{ asset('/makeshop/listSearch.js') }}"></script>
     <script>
         const API = 'https://makeshop_tool.local';
@@ -46,178 +47,260 @@
         </div>
         <div class="container-search">
             <div class="siderbar-search">
-                <section class="box-checked-categories">
-                    <div>
-                        <ul class="category-checked">
-                            <li v-for="(item, index) in categories">
-                                <span>@{{ item.name }}</span>
-                            </li>
-                            <li v-if="categories.length > 0">
-                                <span class="rest-setting" v-on:click="resetSetting()">
+                <button class="siderbar-search_close">
+                    <img src="https://gigaplus.makeshop.jp/2448/lib/images/common/close.gif" alt="閉じる">
+                </button>
+                <button class="siderbar-search_back">
+                    <svg viewBox="0 0 20 20" class="svg-left" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M6.187 16.9c-.25.253-.25.66 0 .91.248.253.652.253.9 0l7.285-7.355c.25-.25.25-.66 0-.91L7.088 2.19c-.25-.253-.652-.253-.9 0-.25.25-.25.658-.002.91L12.83 10l-6.643 6.9z">
+                        </path>
+                    </svg>
+                </button>
+                <h2 class="sp-modalBtn-title">絞り込み　<span>全 @{{ totalProduct }} 件</span></h2>
+                <div class="sp-modalBtn">
+                    <div class="action-search sp-modalBtn-click">
+                        <button type="button" v-on:click="onSearch()" title="選択したお好みワイン条件を検索する">
+                            選択したお好みワイン条件を検索する
+                        </button>
+                    </div>
+                    <div class="category-checked_deletbtn">
+                        <span v-on:click="resetSetting()">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                class="bi bi-x" viewBox="0 0 16 16">
+                                <path
+                                    d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
+                            </svg>
+                            選択した条件をクリアする
+                        </span>
+                    </div>
+                </div>
+                <div class="siderbar-search_spWrap">
+                    <section class="box-checked-categories">
+                        <div>
+                            <h2 class="siderbar-search_title" v-if="categories.length > 0">選択した条件</h2>
+                            <ul class="category-checked">
+                                <li v-for="(item, index) in categories">
+                                    <span>@{{ item.name }}</span>
+                                </li>
+                            </ul>
+                            <div class="category-checked_deletbtn" v-if="categories.length > 0">
+                                <span v-on:click="resetSetting()">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                         fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
                                         <path
                                             d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
                                     </svg>
-                                    すべての条件を削除します
+                                    選択した条件をクリアする
                                 </span>
-                            </li>
-                        </ul>
-                    </div>
-                </section>
-                <section class="box-search" id="search_price">
-                    <header>
-                        <div class="title-header">
-                            <h2>価格</h2>
-                        </div>
-                    </header>
-                    <main>
-                        <div class="flex-price">
-                            <div class="min-price">
-                                <input type="number" min="0" v-bind:max="arraySearch.price_max" ref="price_min"
-                                    id="price_min" class="form-control" placeholder="0">
-                            </div>
-                            <div class="icon">
-                                <span>円 〜</span>
-                            </div>
-                            <div class="max-price">
-                                <input type="number" min="0" v-bind:max="arraySearch.price_max" ref="price_max"
-                                    id="price_max" class="form-control" placeholder="1.000.000">
                             </div>
                         </div>
-                    </main>
-                    <footer class="action-search">
-                        <button type="button" v-on:click="onSearch()" title="条件を変更">
-                            条件を変更</button>
-                    </footer>
-                </section>
-                <section class="box-search" id="search_categories">
-                    <header>
-                        <div class="title-header">
-                            <h2>タイプ</h2>
-                        </div>
-                    </header>
-                    <main>
-                        <div class="flex-type">
-                            <div v-for="(item, index) in listSearch.categories" class="item-checkbox">
-                                <label v-bind:for="`category_${item.code}`">
-                                    <input type="checkbox" name="size[]" v-model="arraySearch.category"
-                                        :value="item.code" v-bind:id="`category_${item.code}`"
-                                        class="custom-form-checkbox" />
-                                    <span>@{{ item.name }}</span>
-                                </label>
-                            </div>
-                        </div>
-                    </main>
-                    <footer class="action-search">
-                        <button type="button" v-on:click="onSearch()" title="条件を変更"> 条件を変更</button>
-                    </footer>
-                </section>
-                <section class="box-search" id="search_origin">
-                    <header>
-                        <div class="title-header">
-                            <h2>産地</h2>
-                        </div>
-                    </header>
-                    <main>
-                        <div class="flex-type">
-                            <div class="item-checkbox">
-                                <label for="all-origin">
-                                    <input type="checkbox" ref="origin_all" name="all-origin"
-                                        v-on:click="handleAllOrigin($event)" value="all-origin" id="all-origin"
-                                        class="custom-form-checkbox" />
-                                    <span>すべて</span>
-                                </label>
-                            </div>
-                            <div v-for="(item, index) in listSearch.origin" class="list-origin">
-                                <div v-if="item.child" class="btn-open">
-                                    <div class="block-button">
-                                        <button class="hover-underline">
-                                            <div class="flex">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
-                                                    viewBox="0 0 20 20"
-                                                    class="svg-down mr-2 inline-block h-5 w-5 fill-current opacity-25">
-                                                    <g fill="none" fill-opacity=".88" fill-rule="evenodd">
-                                                        <g fill="#000">
-                                                            <g>
-                                                                <g>
-                                                                    <g>
-                                                                        <path
-                                                                            d="M14.283 7.245l.717.717-4.642 4.641c-.176.176-.449.196-.646.059l-.07-.059L5 7.962l.717-.717L10 11.528l4.283-4.283z"
-                                                                            transform="translate(-810 -4492) translate(0 1622) translate(600 2860) translate(210 10)">
-                                                                        </path>
-                                                                    </g>
-                                                                </g>
-                                                            </g>
-                                                        </g>
-                                                    </g>
-                                                </svg>
-                                                <svg viewBox="0 0 20 20" class="svg-left"
-                                                    xmlns="http://www.w3.org/2000/svg">
-                                                    <path
-                                                        d="M6.187 16.9c-.25.253-.25.66 0 .91.248.253.652.253.9 0l7.285-7.355c.25-.25.25-.66 0-.91L7.088 2.19c-.25-.253-.652-.253-.9 0-.25.25-.25.658-.002.91L12.83 10l-6.643 6.9z">
-                                                    </path>
-                                                </svg>
-                                                <span>@{{ item.name }}</span>
-                                            </div>
-                                        </button>
+                    </section>
+                    <section class="box-search" id="search_price">
+                        <h2 class="siderbar-search_title">価格</h2>
+                        <div class="siderbar-search_under">
+
+                            <div class="box-search_inner">
+                                <div class="flex-price">
+                                    <div class="min-price">
+                                        <input type="number" min="0" v-bind:max="arraySearch.price_max"
+                                            ref="price_min" id="price_min" class="form-control" placeholder="0">
                                     </div>
-                                    <div class="none-block">
-                                        <div v-for="(item_child, index_child) in item.array_child"
-                                            class="list-orign-lv2">
-                                            <div v-if="item_child.child" class="btn-open">
-                                                <div class="block-button">
-                                                    <button class="hover-underline">
-                                                        <div class="flex">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="20"
-                                                                height="20" viewBox="0 0 20 20"
-                                                                class="svg-down mr-2 inline-block h-5 w-5 fill-current opacity-25">
-                                                                <g fill="none" fill-opacity=".88"
-                                                                    fill-rule="evenodd">
-                                                                    <g fill="#000">
-                                                                        <g>
-                                                                            <g>
-                                                                                <g>
-                                                                                    <path
-                                                                                        d="M14.283 7.245l.717.717-4.642 4.641c-.176.176-.449.196-.646.059l-.07-.059L5 7.962l.717-.717L10 11.528l4.283-4.283z"
-                                                                                        transform="translate(-810 -4492) translate(0 1622) translate(600 2860) translate(210 10)">
-                                                                                    </path>
-                                                                                </g>
-                                                                            </g>
-                                                                        </g>
-                                                                    </g>
-                                                                </g>
-                                                            </svg>
-                                                            <svg viewBox="0 0 20 20" class="svg-left"
-                                                                xmlns="http://www.w3.org/2000/svg">
-                                                                <path
-                                                                    d="M6.187 16.9c-.25.253-.25.66 0 .91.248.253.652.253.9 0l7.285-7.355c.25-.25.25-.66 0-.91L7.088 2.19c-.25-.253-.652-.253-.9 0-.25.25-.25.658-.002.91L12.83 10l-6.643 6.9z">
-                                                                </path>
-                                                            </svg>
-                                                            <span>@{{ item_child.name }}</span>
-                                                        </div>
-                                                    </button>
+                                    <div class="icon">
+                                        <span>円 &#12316;</span>
+                                    </div>
+                                    <div class="max-price">
+                                        <input type="number" min="0" v-bind:max="arraySearch.price_max"
+                                            ref="price_max" id="price_max" class="form-control" placeholder="1.000.000">
+                                    </div>
+                                    <div class="icon">
+                                        <span>円</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="action-search sp-action_back">
+                                <button type="button" v-on:click="onSearch()" title="選択したお好みワイン条件を検索する">
+                                    選択したお好みワイン条件を検索する
+                                </button>
+                            </div>
+                        </div>
+                    </section>
+                    <section class="box-search btn-open" id="search_categories">
+                        <h2 class="siderbar-search_title title-open active"><span class="title-text">タイプ</span><span
+                                class="sp_insert" v-html="showNameCheckboxCategory('category')"></span></h2>
+                        <div class="siderbar-search_under none-block" style="display: block;">
+                            <div class="box-search_inner">
+                                <div class="flex-type">
+                                    <div v-for="(item, index) in listSearch.categories" class="item-checkbox">
+                                        <label v-bind:for="`category_${item.code}`">
+                                            <input type="checkbox" name="size[]" v-model="arraySearch.category"
+                                                :value="item.code" v-bind:id="`category_${item.code}`"
+                                                class="custom-form-checkbox" />
+                                            <span>@{{ item.name }}</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="action-search sp-action_back">
+                                <button type="button" v-on:click="onSearch()" title="選択したお好みワイン条件を検索する">
+                                    選択したお好みワイン条件を検索する</button>
+                            </div>
+                        </div>
+                    </section>
+                    <section class="box-search btn-open" id="search_origin">
+                        <h2 class="siderbar-search_title title-open active"><span class="title-text">産地</span><span
+                                class="sp_insert" v-html="showNameCheckboxCategory('origin')"></span></h2>
+                        <div class="siderbar-search_under none-block" style="display: block;">
+                            <div class="box-search_inner">
+                                <div class="flex-type">
+                                    <div class="item-checkbox">
+                                        <label for="all-origin">
+                                            <input type="checkbox" ref="origin_all" name="all-origin"
+                                                v-on:click="handleAllOrigin($event)" value="all-origin"
+                                                id="all-origin" class="custom-form-checkbox" />
+                                            <span>すべて</span>
+                                        </label>
+                                    </div>
+                                    <div v-for="(item, index) in listSearch.origin" class="list-origin">
+                                        <div v-if="item.child"
+                                            v-bind:class="{ 'btn-open': true, 'active': isOpen(item.code, 'level2') }">
+                                            <div class="item-checkbox">
+                                                <label v-bind:for="`body_level_1_${item.code}`">
+                                                    <input type="checkbox" v-bind:id="`body_level_1_${item.code}`"
+                                                        class="custom-form-checkbox" v-model="this.bodyLevel.level2"
+                                                        v-bind:value="item.code"
+                                                        v-on:click="IsDemo($event, item, 'level1')" />
+                                                    <span>@{{ item.name }}</span>
+                                                </label>
+                                                <div
+                                                    v-bind:class="{ 'icon-open': true, 'active': isOpen(item.code, 'level2') }">
+                                                    <svg viewBox="0 0 20 20" class="svg-down"
+                                                        xmlns="http://www.w3.org/2000/svg">
+                                                        <path
+                                                            d="M6.187 16.9c-.25.253-.25.66 0 .91.248.253.652.253.9 0l7.285-7.355c.25-.25.25-.66 0-.91L7.088 2.19c-.25-.253-.652-.253-.9 0-.25.25-.25.658-.002.91L12.83 10l-6.643 6.9z">
+                                                        </path>
+                                                    </svg>
+                                                    <svg viewBox="0 0 20 20" class="svg-left"
+                                                        xmlns="http://www.w3.org/2000/svg">
+                                                        <path
+                                                            d="M6.187 16.9c-.25.253-.25.66 0 .91.248.253.652.253.9 0l7.285-7.355c.25-.25.25-.66 0-.91L7.088 2.19c-.25-.253-.652-.253-.9 0-.25.25-.25.658-.002.91L12.83 10l-6.643 6.9z">
+                                                        </path>
+                                                    </svg>
                                                 </div>
-                                                <div class="none-block">
-                                                    <div v-for="(item_child_lv2, index_child_lv2) in item_child.array_child"
-                                                        class="item-checkbox">
-                                                        <label v-bind:for="`type_${item_child_lv2.code}`">
-                                                            <input type="checkbox" name="origin"
-                                                                v-bind:value="item_child_lv2.code"
-                                                                v-model="arraySearch.origin"
-                                                                v-bind:id="`type_${item_child_lv2.code}`"
-                                                                class="custom-form-checkbox" />
-                                                            <span>@{{ item_child_lv2.name }}</span>
-                                                        </label>
+                                            </div>
+                                            <div
+                                                v-bind:class="{'none-block':true, 'block':isOpen(item.code, 'level2') }">
+                                                <div v-for="(item_child, index_child) in item.array_child"
+                                                    class="list-orign-lv2">
+                                                    <div v-if="item_child.child"
+                                                        v-bind:class="{ 'btn-open': true, 'active': isOpen(item_child.code, 'level3') }">
+                                                        <div class="item-checkbox">
+                                                            <label v-bind:for="`body_level_2_${item_child.code}`">
+                                                                <input type="checkbox"
+                                                                    v-bind:id="`body_level_2_${item_child.code}`"
+                                                                    class="custom-form-checkbox"
+                                                                    v-model="this.bodyLevel.level3"
+                                                                    v-bind:value="item_child.code"
+                                                                    v-on:click="IsDemo($event, item_child, 'level2')" />
+                                                                <span>@{{ item_child.name }}</span>
+                                                            </label>
+                                                            <div
+                                                                v-bind:class="{ 'icon-open': true, 'active': isOpen(item_child.code, 'level3') }">
+                                                                <svg viewBox="0 0 20 20" class="svg-down"
+                                                                    xmlns="http://www.w3.org/2000/svg">
+                                                                    <path
+                                                                        d="M6.187 16.9c-.25.253-.25.66 0 .91.248.253.652.253.9 0l7.285-7.355c.25-.25.25-.66 0-.91L7.088 2.19c-.25-.253-.652-.253-.9 0-.25.25-.25.658-.002.91L12.83 10l-6.643 6.9z">
+                                                                    </path>
+                                                                </svg>
+                                                                <svg viewBox="0 0 20 20" class="svg-left"
+                                                                    xmlns="http://www.w3.org/2000/svg">
+                                                                    <path
+                                                                        d="M6.187 16.9c-.25.253-.25.66 0 .91.248.253.652.253.9 0l7.285-7.355c.25-.25.25-.66 0-.91L7.088 2.19c-.25-.253-.652-.253-.9 0-.25.25-.25.658-.002.91L12.83 10l-6.643 6.9z">
+                                                                    </path>
+                                                                </svg>
+                                                            </div>
+                                                        </div>
+                                                        <div
+                                                            v-bind:class="{ 'none-block': true, 'active': isOpen(item_child.code, 'level3') }">
+                                                            <div v-for="(item_child_lv2, index_child_lv2) in item_child.array_child"
+                                                                class="item-checkbox">
+                                                                <label v-bind:for="`type_${item_child_lv2.code}`">
+                                                                    <input type="checkbox" name="origin"
+                                                                        v-bind:value="item_child_lv2.code"
+                                                                        v-model="arraySearch.origin"
+                                                                        v-bind:id="`type_${item_child_lv2.code}`"
+                                                                        class="custom-form-checkbox" />
+                                                                    <span>@{{ item_child_lv2.name }}</span>
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div v-else>
+                                                        <div class="item-checkbox">
+                                                            <label v-bind:for="`type_${item_child.code}`">
+                                                                <input type="checkbox" name="origin"
+                                                                    v-bind:value="item_child.code"
+                                                                    v-model="arraySearch.origin"
+                                                                    v-bind:id="`type_${item_child.code}`"
+                                                                    class="custom-form-checkbox" />
+                                                                <span>@{{ item_child.name }}</span>
+                                                            </label>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div v-else>
-                                                <div class="item-checkbox">
+                                        </div>
+                                        <div v-else>
+                                            <div class="item-checkbox">
+                                                <label v-bind:for="`origin_${item.code}`">
+                                                    <input type="checkbox" name="origin" v-bind:value="item.code"
+                                                        v-model="arraySearch.origin" v-bind:id="`origin_${item.code}`"
+                                                        class="custom-form-checkbox" />
+                                                    <span>@{{ item.name }}</span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="action-search sp-action_back">
+                                <button type="button" v-on:click="onSearch()"> 選択したお好みワイン条件を検索する</button>
+                            </div>
+                        </div>
+                    </section>
+                    <section class="box-search btn-open" id="search_type">
+                        <h2 class="siderbar-search_title title-open active"><span class="title-text">品種</span><span
+                                class="sp_insert" v-html="showNameCheckboxCategory('type')"></span></h2>
+                        <div class="siderbar-search_under none-block" style="display: block;">
+                            <div class="box-search_inner">
+                                <div class="flex-type">
+                                    <div v-for="(item, index) in listSearch.type" class="list-type">
+                                        <div v-if="item.child" class="btn-open">
+                                            <div class="block-button">
+                                                <button class="hover-underline">
+                                                    <div class="flex">
+                                                        <svg viewBox="0 0 20 20" class="svg-down"
+                                                            xmlns="http://www.w3.org/2000/svg">
+                                                            <path
+                                                                d="M6.187 16.9c-.25.253-.25.66 0 .91.248.253.652.253.9 0l7.285-7.355c.25-.25.25-.66 0-.91L7.088 2.19c-.25-.253-.652-.253-.9 0-.25.25-.25.658-.002.91L12.83 10l-6.643 6.9z">
+                                                            </path>
+                                                        </svg>
+                                                        <svg viewBox="0 0 20 20" class="svg-left"
+                                                            xmlns="http://www.w3.org/2000/svg">
+                                                            <path
+                                                                d="M6.187 16.9c-.25.253-.25.66 0 .91.248.253.652.253.9 0l7.285-7.355c.25-.25.25-.66 0-.91L7.088 2.19c-.25-.253-.652-.253-.9 0-.25.25-.25.658-.002.91L12.83 10l-6.643 6.9z">
+                                                            </path>
+                                                        </svg>
+                                                        <span>@{{ item.name }}</span>
+                                                    </div>
+                                                </button>
+                                            </div>
+                                            <div class="none-block">
+                                                <div v-for="(item_child, index_child) in item.array_child"
+                                                    class="item-checkbox">
                                                     <label v-bind:for="`type_${item_child.code}`">
-                                                        <input type="checkbox" name="origin"
-                                                            v-bind:value="item_child.code"
-                                                            v-model="arraySearch.origin"
+                                                        <input type="checkbox" name="type[]"
+                                                            v-bind:value="item_child.code" v-model="arraySearch.type"
                                                             v-bind:id="`type_${item_child.code}`"
                                                             class="custom-form-checkbox" />
                                                         <span>@{{ item_child.name }}</span>
@@ -225,292 +308,232 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </div>
-                                <div v-else>
-                                    <div class="item-checkbox">
-                                        <label v-bind:for="`origin_${item.code}`">
-                                            <input type="checkbox" name="origin" v-bind:value="item.code"
-                                                v-model="arraySearch.origin" v-bind:id="`origin_${item.code}`"
-                                                class="custom-form-checkbox" />
-                                            <span>@{{ item.name }}</span>
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </main>
-                    <footer class="action-search">
-                        <button type="button" v-on:click="onSearch()"> 条件を変更</button>
-                    </footer>
-                </section>
-                <section class="box-search" id="search_type">
-                    <header>
-                        <div class="title-header">
-                            <h2>品種</h2>
-                        </div>
-                    </header>
-                    <main>
-                        <div class="flex-type">
-                            <div v-for="(item, index) in listSearch.type" class="list-type">
-                                <div v-if="item.child" class="btn-open">
-                                    <div class="block-button">
-                                        <button class="hover-underline">
-                                            <div class="flex">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
-                                                    viewBox="0 0 20 20"
-                                                    class="svg-down mr-2 inline-block h-5 w-5 fill-current opacity-25">
-                                                    <g fill="none" fill-opacity=".88" fill-rule="evenodd">
-                                                        <g fill="#000">
-                                                            <g>
-                                                                <g>
-                                                                    <g>
-                                                                        <path
-                                                                            d="M14.283 7.245l.717.717-4.642 4.641c-.176.176-.449.196-.646.059l-.07-.059L5 7.962l.717-.717L10 11.528l4.283-4.283z"
-                                                                            transform="translate(-810 -4492) translate(0 1622) translate(600 2860) translate(210 10)">
-                                                                        </path>
-                                                                    </g>
-                                                                </g>
-                                                            </g>
-                                                        </g>
-                                                    </g>
-                                                </svg>
-                                                <svg viewBox="0 0 20 20" class="svg-left"
-                                                    xmlns="http://www.w3.org/2000/svg">
-                                                    <path
-                                                        d="M6.187 16.9c-.25.253-.25.66 0 .91.248.253.652.253.9 0l7.285-7.355c.25-.25.25-.66 0-.91L7.088 2.19c-.25-.253-.652-.253-.9 0-.25.25-.25.658-.002.91L12.83 10l-6.643 6.9z">
-                                                    </path>
-                                                </svg>
-                                                <span>@{{ item.name }}</span>
+                                        <div v-else>
+                                            <div class="item-checkbox">
+                                                <label v-bind:for="`type_${item.code}`">
+                                                    <input type="checkbox" name="type[]" v-bind:value="item.code"
+                                                        v-model="arraySearch.type" v-bind:id="`type_${item.code}`"
+                                                        class="custom-form-checkbox" />
+                                                    <span>@{{ item.name }}</span>
+                                                </label>
                                             </div>
-                                        </button>
-                                    </div>
-                                    <div class="none-block">
-                                        <div v-for="(item_child, index_child) in item.array_child"
-                                            class="item-checkbox">
-                                            <label v-bind:for="`type_${item_child.code}`">
-                                                <input type="checkbox" name="type[]" v-bind:value="item_child.code"
-                                                    v-model="arraySearch.type" v-bind:id="`type_${item_child.code}`"
-                                                    class="custom-form-checkbox" />
-                                                <span>@{{ item_child.name }}</span>
-                                            </label>
                                         </div>
                                     </div>
                                 </div>
-                                <div v-else>
-                                    <div class="item-checkbox">
-                                        <label v-bind:for="`type_${item.code}`">
-                                            <input type="checkbox" name="type[]" v-bind:value="item.code"
-                                                v-model="arraySearch.type" v-bind:id="`type_${item.code}`"
+                            </div>
+                            <div class="action-search sp-action_back">
+                                <button type="button" v-on:click="onSearch()"> 選択したお好みワイン条件を検索する</button>
+                            </div>
+                        </div>
+                    </section>
+                    <section class="box-search btn-open" id="search_size">
+                        <h2 class="siderbar-search_title title-open active"><span class="title-text">サイズ</span><span
+                                class="sp_insert" v-html="showNameCheckboxCategory('size')"></span></h2>
+                        <div class="siderbar-search_under none-block" style="display: block;">
+                            <div class="box-search_inner">
+                                <div class="flex-type">
+                                    <div v-for="(item, index) in listSearch.size" class="item-checkbox">
+                                        <label v-bind:for="`size_${item.id}`">
+                                            <input type="checkbox" name="size[]" v-model="arraySearch.size"
+                                                :value="item.code" v-bind:id="`size_${item.id}`"
                                                 class="custom-form-checkbox" />
                                             <span>@{{ item.name }}</span>
                                         </label>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </main>
-                    <footer class="action-search">
-                        <button type="button" v-on:click="onSearch()"> 条件を変更</button>
-                    </footer>
-                </section>
-                <section class="box-search" id="search_size">
-                    <header>
-                        <div class="title-header">
-                            <h2>サイズ</h2>
-                        </div>
-                    </header>
-                    <main>
-                        <div class="flex-type">
-                            <div v-for="(item, index) in listSearch.size" class="item-checkbox">
-                                <label v-bind:for="`size_${item.id}`">
-                                    <input type="checkbox" name="size[]" v-model="arraySearch.size"
-                                        :value="item.code" v-bind:id="`size_${item.id}`"
-                                        class="custom-form-checkbox" />
-                                    <span>@{{ item.name }}</span>
-                                </label>
+                            <div class="action-search sp-action_back">
+                                <button type="button" v-on:click="onSearch()"> 選択したお好みワイン条件を検索する</button>
                             </div>
                         </div>
-                    </main>
-                    <footer class="action-search">
-                        <button type="button" v-on:click="onSearch()"> 条件を変更</button>
-                    </footer>
-                </section>
-                <section class="box-search" id="search_vintage">
-                    <header>
-                        <div class="title-header">
-                            <h2>ヴィンテージ</h2>
-                        </div>
-                    </header>
-                    <main>
-                        <div class="flex-type">
-                            <div v-for="(item, index) in listSearch.vintage" class="item-checkbox">
-                                <label v-bind:for="`vintage_${item.id}`">
-                                    <input type="checkbox" name="vintage[]" v-model="arraySearch.vintage"
-                                        :value="item.code" v-bind:id="`vintage_${item.id}`"
-                                        class="custom-form-checkbox" />
-                                    <span>@{{ item.name }}</span>
-                                </label>
-                            </div>
-                        </div>
-                    </main>
-                    <footer class="action-search">
-                        <button type="button" v-on:click="onSearch()" title="条件を変更"> 条件を変更</button>
-                    </footer>
-                </section>
-                <section class="box-search" id="search_ranker">
-                    <header>
-                        <div class="title-header">
-                            <h2>格付け</h2>
-                        </div>
-                    </header>
-                    <main>
-                        <div class="flex-type">
-                            <div v-for="(item, index) in listSearch.ranker" class="list-ranker">
-                                <div v-if="item.child" class="btn-open">
-                                    <div class="block-button">
-                                        <button class="hover-underline">
-                                            <div class="flex">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
-                                                    viewBox="0 0 20 20"
-                                                    class="svg-down mr-2 inline-block h-5 w-5 fill-current opacity-25">
-                                                    <g fill="none" fill-opacity=".88" fill-rule="evenodd">
-                                                        <g fill="#000">
-                                                            <g>
-                                                                <g>
-                                                                    <g>
-                                                                        <path
-                                                                            d="M14.283 7.245l.717.717-4.642 4.641c-.176.176-.449.196-.646.059l-.07-.059L5 7.962l.717-.717L10 11.528l4.283-4.283z"
-                                                                            transform="translate(-810 -4492) translate(0 1622) translate(600 2860) translate(210 10)">
-                                                                        </path>
-                                                                    </g>
-                                                                </g>
-                                                            </g>
-                                                        </g>
-                                                    </g>
-                                                </svg>
-                                                <svg viewBox="0 0 20 20" class="svg-left"
-                                                    xmlns="http://www.w3.org/2000/svg">
-                                                    <path
-                                                        d="M6.187 16.9c-.25.253-.25.66 0 .91.248.253.652.253.9 0l7.285-7.355c.25-.25.25-.66 0-.91L7.088 2.19c-.25-.253-.652-.253-.9 0-.25.25-.25.658-.002.91L12.83 10l-6.643 6.9z">
-                                                    </path>
-                                                </svg>
-                                                <span>@{{ item.name }}</span>
-                                            </div>
-                                        </button>
+                    </section>
+                    <section class="box-search btn-open" id="search_vintage">
+                        <h2 class="siderbar-search_title title-open active"><span
+                                class="title-text">ヴィンテージ</span><span class="sp_insert"
+                                v-html="showNameCheckboxCategory('vintage')"></span>
+                        </h2>
+                        <div class="siderbar-search_under none-block" style="display: block;">
+                            <div class="box-search_inner">
+                                <div class="flex-type">
+                                    <div v-for="(item, index) in listSearch.vintage" class="item-checkbox">
+                                        <label v-bind:for="`vintage_${item.id}`">
+                                            <input type="checkbox" name="vintage[]" v-model="arraySearch.vintage"
+                                                :value="item.code" v-bind:id="`vintage_${item.id}`"
+                                                class="custom-form-checkbox" />
+                                            <span>@{{ item.name }}</span>
+                                        </label>
                                     </div>
-                                    <div class="none-block">
-                                        <div v-for="(item_child, index_child) in item.array_child"
-                                            class="item-checkbox">
-                                            <label v-bind:for="`ranker_${item_child.code}`">
-                                                <input type="checkbox" name="ranker[]" v-bind:value="item_child.code"
-                                                    v-model="arraySearch.ranker"
-                                                    v-bind:id="`ranker_${item_child.code}`"
-                                                    class="custom-form-checkbox" />
-                                                <span>@{{ item_child.name }}</span>
-                                            </label>
+                                </div>
+                            </div>
+                            <div class="action-search sp-action_back">
+                                <button type="button" v-on:click="onSearch()" title="選択したお好みワイン条件を検索する">
+                                    選択したお好みワイン条件を検索する</button>
+                            </div>
+                        </div>
+                    </section>
+                    <section class="box-search btn-open" id="search_ranker">
+                        <h2 class="siderbar-search_title title-open active"><span class="title-text">格付け</span><span
+                                class="sp_insert" v-html="showNameCheckboxCategory('ranker')"></span></h2>
+                        <div class="siderbar-search_under none-block" style="display: block;">
+                            <div class="box-search_inner">
+                                <div class="flex-type">
+                                    <div v-for="(item, index) in listSearch.ranker" class="list-ranker">
+                                        <div v-if="item.child" class="btn-open">
+                                            <div class="block-button">
+                                                <button class="hover-underline">
+                                                    <div class="flex">
+                                                        <svg viewBox="0 0 20 20" class="svg-down"
+                                                            xmlns="http://www.w3.org/2000/svg">
+                                                            <path
+                                                                d="M6.187 16.9c-.25.253-.25.66 0 .91.248.253.652.253.9 0l7.285-7.355c.25-.25.25-.66 0-.91L7.088 2.19c-.25-.253-.652-.253-.9 0-.25.25-.25.658-.002.91L12.83 10l-6.643 6.9z">
+                                                            </path>
+                                                        </svg>
+                                                        <svg viewBox="0 0 20 20" class="svg-left"
+                                                            xmlns="http://www.w3.org/2000/svg">
+                                                            <path
+                                                                d="M6.187 16.9c-.25.253-.25.66 0 .91.248.253.652.253.9 0l7.285-7.355c.25-.25.25-.66 0-.91L7.088 2.19c-.25-.253-.652-.253-.9 0-.25.25-.25.658-.002.91L12.83 10l-6.643 6.9z">
+                                                            </path>
+                                                        </svg>
+                                                        <span>@{{ item.name }}</span>
+                                                    </div>
+                                                </button>
+                                            </div>
+                                            <div class="none-block">
+                                                <div v-for="(item_child, index_child) in item.array_child"
+                                                    class="item-checkbox">
+                                                    <label v-bind:for="`ranker_${item_child.code}`">
+                                                        <input type="checkbox" name="ranker[]"
+                                                            v-bind:value="item_child.code"
+                                                            v-model="arraySearch.ranker"
+                                                            v-bind:id="`ranker_${item_child.code}`"
+                                                            class="custom-form-checkbox" />
+                                                        <span>@{{ item_child.name }}</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div v-else>
+                                            <div class="item-checkbox">
+                                                <label v-bind:for="`ranker_${item.code}`">
+                                                    <input type="checkbox" name="ranker[]" v-bind:value="item.code"
+                                                        v-model="arraySearch.ranker" v-bind:id="`ranker_${item.code}`"
+                                                        class="custom-form-checkbox" />
+                                                    <span>@{{ item.name }}</span>
+                                                </label>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div v-else>
-                                    <div class="item-checkbox">
-                                        <label v-bind:for="`ranker_${item.code}`">
-                                            <input type="checkbox" name="ranker[]" v-bind:value="item.code"
-                                                v-model="arraySearch.ranker" v-bind:id="`ranker_${item.code}`"
+                            </div>
+                            <div class="action-search sp-action_back">
+                                <button type="button" v-on:click="onSearch()"> 選択したお好みワイン条件を検索する</button>
+                            </div>
+                        </div>
+                    </section>
+                    <section class="box-search btn-open" id="search_body">
+                        <h2 class="siderbar-search_title title-open active"><span
+                                class="title-text">味わいから探す</span><span class="sp_insert"
+                                v-html="showNameCheckboxCategory('body')"></span></h2>
+                        <div class="siderbar-search_under none-block" style="display: block;">
+                            <div class="box-search_inner">
+                                <div class="flex-type">
+                                    <div v-if="checking.body" class="item-checkbox">
+                                        <label for="body-all">
+                                            <input type="checkbox" ref="body_all" name="body-all"
+                                                v-on:click="handleAllBody($event)" value="body-all" id="body-all"
+                                                class="custom-form-checkbox" />
+                                            <span>すべて</span>
+                                        </label>
+                                    </div>
+                                    <div v-for="(item, index) in listSearch.body" class="item-checkbox">
+                                        <label v-if="showItemBody(item.parent)" v-bind:for="`body_${item.id}`">
+                                            <input type="checkbox" name="body[]" v-model="arraySearch.body"
+                                                :value="item.code" v-bind:id="`body_${item.id}`"
                                                 class="custom-form-checkbox" />
                                             <span>@{{ item.name }}</span>
                                         </label>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </main>
-                    <footer class="action-search">
-                        <button type="button" v-on:click="onSearch()"> 条件を変更</button>
-                    </footer>
-                </section>
-                <section class="box-search" id="search_body">
-                    <header>
-                        <div class="title-header">
-                            <h2>味わいから探す</h2>
-                        </div>
-                    </header>
-                    <main>
-                        <div class="flex-type">
-                            <div v-if="checking.body" class="item-checkbox">
-                                <label for="body-all">
-                                    <input type="checkbox" ref="body_all" name="body-all"
-                                        v-on:click="handleAllBody($event)" value="body-all" id="body-all"
-                                        class="custom-form-checkbox" />
-                                    <span>すべて</span>
-                                </label>
-                            </div>
-                            <div v-for="(item, index) in listSearch.body" class="item-checkbox">
-                                <label v-if="showItemBody(item.parent)" v-bind:for="`body_${item.id}`">
-                                    <input type="checkbox" name="body[]" v-model="arraySearch.body"
-                                        :value="item.code" v-bind:id="`body_${item.id}`"
-                                        class="custom-form-checkbox" />
-                                    <span>@{{ item.name }}</span>
-                                </label>
+                            <div class="action-search sp-action_back">
+                                <button type="button" v-on:click="onSearch()" title="選択したお好みワイン条件を検索する">
+                                    選択したお好みワイン条件を検索する</button>
                             </div>
                         </div>
-                    </main>
-                    <footer class="action-search">
-                        <button type="button" v-on:click="onSearch()" title="条件を変更"> 条件を変更</button>
-                    </footer>
-                </section>
-                <section style="display: none !important" class="box-search" id="production_keyword">
-                    <header>
-                        <div class="title-header">
-                            <h2>キーワード</h2>
-                        </div>
-                    </header>
-                    <main>
-                        <div class="flex-keyword">
-                            <div class="main-keyword">
-                                <div class="keyword-input">
-                                    <input type="text" ref="keyword" id="keyword" name="keyword"
-                                        placeholder="キーワード、商品ID、ブランドコード" />
-                                </div>
-                                <div class="keyword-button">
-                                    <button type="button" v-on:click="onSearch()" title="検索">検索</button>
+                    </section>
+                    <section style="display: none !important" class="box-search btn-open" id="production_keyword">
+                        <h2 class="siderbar-search_title title-open active"><span class="title-text">キーワード</span><span
+                                class="sp_insert" v-html="showNameCheckboxCategory('keyword')"></span></h2>
+                        <div class="siderbar-search_under none-block" style="display: block;">
+                            <div class="box-search_inner">
+                                <div class="flex-keyword">
+                                    <div class="main-keyword">
+                                        <div class="keyword-input">
+                                            <input type="text" ref="keyword" id="keyword" name="keyword"
+                                                placeholder="キーワード、商品ID、ブランドコード" />
+                                        </div>
+                                        <div class="keyword-button">
+                                            <button type="button" v-on:click="onSearch()" title="検索">検索</button>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </main>
-                </section>
-                <section class="box-search" id="search_inventory">
-                    <header>
-                        <div class="title-header">
-                            <h2>在庫状況</h2>
-                        </div>
-                    </header>
-                    <main>
-                        <div class="flex-type">
-                            <div class="item-checkbox">
-                                <label for="inventory-stocking">
-                                    <input type="radio" name="inventory" value="stocking" id="inventory-stocking"
-                                        class="custom-form-checkbox" v-model="arraySearch.inventory" />
-                                    <span>在庫がある商品を表示</span>
-                                </label>
+                    </section>
+                    <section class="box-search btn-open" id="search_inventory">
+                        <h2 class="siderbar-search_title title-open active"><span class="title-text">在庫状況</span><span
+                                class="sp_insert" v-html="showNameCheckboxCategory('inventory')"></span></h2>
+                        <div class="siderbar-search_under none-block" style="display: block;">
+                            <div class="box-search_inner">
+                                <div class="flex-type">
+                                    <div class="item-checkbox">
+                                        <label for="inventory-stocking">
+                                            <input type="radio" name="inventory" value="stocking"
+                                                id="inventory-stocking" class="custom-form-checkbox"
+                                                v-model="arraySearch.inventory" />
+                                            <span>在庫がある商品を表示</span>
+                                        </label>
+                                    </div>
+                                    <div class="item-checkbox">
+                                        <label for="inventory-all">
+                                            <input type="radio" name="inventory" value="all" checked
+                                                id="inventory-all" class="custom-form-checkbox"
+                                                v-model="arraySearch.inventory" />
+                                            <span>在庫が無い商品も表示</span>
+                                        </label>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="item-checkbox">
-                                <label for="inventory-all">
-                                    <input type="radio" name="inventory" value="all" checked id="inventory-all"
-                                        class="custom-form-checkbox" v-model="arraySearch.inventory" />
-                                    <span>在庫が無い商品も表示</span>
-                                </label>
+                            <div class="action-search sp-action_back">
+                                <button type="button" v-on:click="onSearch()" title="選択したお好みワイン条件を検索する">
+                                    選択したお好みワイン条件を検索する</button>
                             </div>
                         </div>
-                    </main>
-                    <footer class="action-search">
-                        <button type="button" v-on:click="onSearch()" title="条件を変更">
-                            条件を変更</button>
-                    </footer>
-                </section>
+                    </section>
+                </div>
             </div>
             <div class="main-search" ref="main-search">
-                <div class="total-search mb-2 ps-3">&nbsp;&nbsp;&nbsp;&nbsp;@{{ totalProduct }}</span> 個の製品が見つかりました
+                <div class="like-winetitleWrap">
+                    <div class="titleArea">
+                        <p class="title_sub">Find your favorite wine</p>
+                        <h2 class="title_main">お好みワインを検索</h2>
+                    </div>
+                    <p class="like-wine_infoText">
+                        複数の条件を選択することで、<br>
+                        サイト内の商品から、お好みのワインを絞り込むことができます。<br>
+                        自分の好みに合わせたぴったりなワインを見つけられます。
+                    </p>
+                    <div class="titleArea">
+                        <p class="title_sub">results</p>
+                        <h2 class="title_main">検索結果</h2>
+                    </div>
+                    <ul class="category-checked_resultsList" v-if="categories.length > 0">
+                        <li v-for="(item, index) in categories">
+                            <span>@{{ item.name }}</span>
+                        </li>
+                    </ul>
+                    <div class="total-search mb-2 ps-3">全 @{{ totalProduct }}</span> 件
+                    </div>
                 </div>
                 <div class="result-search">
                     <div class="product-wrap">
@@ -529,8 +552,8 @@
                                         <a v-bind:href="getUrl(item.brand_code)" target="blank"
                                             v-html="item.name"></a>
                                     </h3>
-                                    <p class="price">@{{ formatPrice(item.price_tax) }}（税込）
-                                    </p>
+                                    <p class="price">&yen;@{{ formatPrice(item.price_tax) }}<span
+                                            class="price_small">（税込）</span></p>
                                 </div>
                             </li>
                         </ul>
@@ -547,7 +570,16 @@
             </div>
         </div>
     </div>
+    <button class="sp-likewine_fixedBtn">お好みワインを検索する</button>
+    <div class="sp-likewine_fixedBtn_back"></div>
     <script>
+        function removeItem(array, item) {
+            let index = array.indexOf(item);
+            if (index != -1) {
+                array.splice(index, 1);
+            }
+            return array;
+        }
         const {
             createApp
         } = Vue;
@@ -584,6 +616,10 @@
                     categories: [],
                     checking: {
                         body: true
+                    },
+                    bodyLevel: {
+                        level2: [],
+                        level3: []
                     }
                 }
             },
@@ -593,6 +629,69 @@
                     _this.parent('.btn-open').find(' > .none-block').slideToggle();
                     _this.toggleClass('active');
                     _this.find(' > .hover-underline').toggleClass('active');
+                });
+                let breakPoint = 1023;
+                $('.title-open').on('click', (evt) => {
+                    let window_w = window.innerWidth;
+                    let _this = $(evt.currentTarget);
+                    _this.toggleClass('active');
+                    if (window_w <= breakPoint) {
+                        _this.parent('.btn-open').find(' > .none-block').toggleClass('sp_active');
+                        $('.siderbar-search_back').addClass('sp_active');
+                        $('.sp-modalBtn').addClass('sp_active');
+                    } else {
+                        _this.parent('.btn-open').find(' > .none-block').slideToggle();
+                    }
+                });
+                window.addEventListener('resize', function() {
+                    let window_w = window.innerWidth;
+                    if (window_w <= breakPoint) {
+                        $('.siderbar-search_under.none-block').slideDown();
+                        if ($('.sp-likewine_fixedBtn').hasClass('active')) {
+                            $('body').css('overflow', 'hidden');
+                        }
+                    } else {
+                        $('body').css('overflow', 'unset');
+                    }
+                });
+                $('.siderbar-search_back').on('click', (evt) => {
+                    $('.siderbar-search_under.none-block').removeClass('sp_active');
+                    $('.siderbar-search_back').removeClass('sp_active');
+                    $('.sp-modalBtn').removeClass('sp_active');
+                });
+                $('.sp-action_back').on('click', (evt) => {
+                    let window_w = window.innerWidth;
+                    if (window_w <= breakPoint) {
+                        $('.siderbar-search_under.none-block').removeClass('sp_active');
+                        $('.siderbar-search_back').removeClass('sp_active');
+                        $('.sp-modalBtn').removeClass('sp_active');
+                    }
+                });
+                $('.sp-likewine_fixedBtn').on('click', (evt) => {
+                    let _this = $(evt.currentTarget);
+                    _this.addClass('active');
+                    $('.siderbar-search').addClass('active');
+                    $('.sp-likewine_fixedBtn_back').addClass('active');
+                    $('body').css('overflow', 'hidden');
+                });
+                $('.siderbar-search_close').on('click', (evt) => {
+                    $('.siderbar-search').removeClass('active');
+                    $('.sp-likewine_fixedBtn_back').removeClass('active');
+                    $('.sp-likewine_fixedBtn').removeClass('active');
+                    $('body').css('overflow', 'unset');
+                });
+                $('.sp-likewine_fixedBtn_back').on('click', (evt) => {
+                    let _this = $(evt.currentTarget);
+                    _this.removeClass('active');
+                    $('.siderbar-search').removeClass('active');
+                    $('.sp-likewine_fixedBtn').removeClass('active');
+                    $('body').css('overflow', 'unset');
+                });
+                $('.sp-modalBtn-click').on('click', (evt) => {
+                    $('.siderbar-search').removeClass('active');
+                    $('.sp-likewine_fixedBtn').removeClass('active');
+                    $('.sp-likewine_fixedBtn_back').removeClass('active');
+                    $('body').css('overflow', 'unset');
                 });
             },
             methods: {
@@ -606,6 +705,112 @@
                         top: 0,
                         behavior: 'smooth'
                     });
+                },
+                IsDemo(event, item, type) {
+                    console.log(`type= ${type} && item=`, item);
+                    let checked = event.currentTarget.checked;
+                    if (type == 'level1') { // Check level 1
+                        if (checked) {
+                            this.bodyLevel.level2.push(item.code);
+                        } else {
+                            removeItem(this.bodyLevel.level2, item.code);
+                        }
+                        if (item.child) {
+                            item.array_child.forEach(item2 => {
+                                if (checked) {
+                                    if (!this.bodyLevel.level3.includes(item2.code)) {
+                                        this.bodyLevel.level3.push(item2.code);
+                                    }
+                                } else {
+                                    removeItem(this.bodyLevel.level3, item2.code);
+                                }
+                                if (item2.child) {
+                                    const array_child_level3 = item2.array_child;
+                                    array_child_level3.forEach(item3 => {
+                                        if (checked) {
+                                            if (!this.arraySearch.origin.includes(item3.code)) {
+                                                this.arraySearch.origin.push(item3.code);
+                                            }
+                                        } else {
+                                            removeItem(this.arraySearch.origin, item3.code);
+                                        }
+                                    });
+                                } else {
+                                    if (checked) {
+                                        if (!this.arraySearch.origin.includes(item2.code)) {
+                                            this.arraySearch.origin.push(item2.code);
+                                        }
+                                    } else {
+                                        removeItem(this.arraySearch.origin, item2.code);
+                                    }
+                                }
+                            });
+                        }
+                    } else if (type == 'level2') { // check level 2
+                        if (checked) {
+                            this.bodyLevel.level3.push(item.code);
+                        } else {
+                            removeItem(this.bodyLevel.level3, item.code);
+                        }
+                        if (item.child) {
+                            item.array_child.forEach(item2 => {
+                                if (checked) {
+                                    if (!this.arraySearch.origin.includes(item2.code)) {
+                                        this.arraySearch.origin.push(item2.code);
+                                    }
+                                } else {
+                                    removeItem(this.arraySearch.origin, item2.code);
+                                }
+                            });
+                        }
+                    } else { //Future
+
+                    }
+
+                },
+                isOpen(code, level) {
+                    if (level == 'level2') {
+                        if (this.bodyLevel.level2.includes(code))
+                            return true;
+                        return false;
+                    } else {
+                        if (this.bodyLevel.level3.includes(code))
+                            return true;
+                        return false;
+                    }
+                },
+                showNameCheckboxCategory(type) {
+                    let html = "";
+                    if (type == 'keyword') {
+                        html = this.arraySearch.keyword;
+                        return html;
+                    }
+                    if (type == 'inventory') {
+                        html = '在庫が無い商品も表示';
+                        if (this.arraySearch.inventory == 'stocking') {
+                            html = '在庫がある商品を表示';
+                        }
+                        return html;
+                    }
+                    if ((type == 'size' && this.arraySearch.size[0] == 'all') || (type == 'vintage' && this
+                            .arraySearch.vintage[0] == 'all') || (type == 'ranker' && this.arraySearch.ranker[0] ==
+                            'all')) {
+                        return "すべて";
+                    }
+                    const categories = this.categories;
+                    if (categories.length > 0) {
+                        categories.forEach((item, index) => {
+                            if (type === item.type) {
+                                html += ` ${item.name},`
+                            }
+                        });
+                        if (html == "") {
+                            return "指定なし";
+                        }
+                        return html.substring(0, html.length - 1);
+                    } else {
+                        return "指定なし";
+                    }
                 },
                 showItemBody(parent) {
                     const isShow = this.showCheckboxAllBody();
