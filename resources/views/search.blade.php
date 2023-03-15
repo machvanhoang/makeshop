@@ -618,10 +618,10 @@
                     return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
                 },
                 getImage(image = null) {
-                    return `https://makeshop-multi-images.akamaized.net/4708/itemimages/${image}`;
+                    return `https://makeshop-multi-images.akamaized.net/2448/itemimages/${image}`;
                 },
                 getUrl(slug = null) {
-                    return `https://www.shinanoya-tokyo.jp/view/item/${slug}`;
+                    return `https://www.shinanoya-wine.jp/view/item/${slug}`;
                 },
                 handleAllOrigin(event) {
                     let checked = event.target.checked;
