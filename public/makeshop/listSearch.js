@@ -659,7 +659,8 @@ function getVintage() {
       "codes": [
         "ct686",
         "ct687",
-        "ct688"
+        "ct688",
+        "ct263"
       ]
     },
     {
@@ -674,8 +675,13 @@ function getVintage() {
     },
     {
       "id": 4,
-      "name": "2011年～",
+      "name": "2011年〜2020年",
       "code": "ct688"
+    },
+    {
+      "id": 5,
+      "name": "2021年〜",
+      "code": "ct263"
     }
   ];
   return _data;

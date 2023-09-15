@@ -497,8 +497,13 @@ const allCategory = [
         "type" : "vintage"
     },
     {
-        "name": "2011年～",
+        "name": "2011年〜2020年",
         "code": "ct688",
+        "type" : "vintage"
+    },
+    {
+        "name": "2021年〜",
+        "code": "ct263",
         "type" : "vintage"
     },
     {
