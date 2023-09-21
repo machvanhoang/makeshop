@@ -515,7 +515,7 @@
                                 <div class="itemDetail">
                                     <h3 class="name">
                                         <a v-bind:href="getUrl(item.brand_code)" target="blank"
-                                            v-html="item.name"></a>
+                                            v-html="onReplaceName(item.name)"></a>
                                     </h3>
                                     <p class="price">@{{ formatPrice(item.price_tax) }}（税込）
                                     </p>
@@ -591,6 +591,9 @@
                         top: 0,
                         behavior: 'smooth'
                     });
+                },
+                onReplaceName(name){
+                    return name.replace(',"',"");
                 },
                 onFormatPrice() {
                     this.arraySearch.price_min = isNaN(parseFloat(this.$refs.price_min.value)) ? 0 : parseFloat(this
