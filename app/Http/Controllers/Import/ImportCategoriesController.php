@@ -13,7 +13,7 @@ class ImportCategoriesController extends Controller
         if ($request->getMethod() == 'POST') {
             try {
                 ini_set('max_execution_time', 36000);
-                (new ImportCategories)->import($request->file_excel, null, \Maatwebsite\Excel\Excel::CSV);
+                (new ImportCategories)->import($request->file_excel, null, \Maatwebsite\Excel\Excel::XLSX);
                 return redirect()->route('import.category')->with('_alert_total', __('ユーザーが正常にインポートされました'));
             } catch (\Maatwebsite\Excel\Validators\ValidationException $e) {
                 $failures = $e->failures();

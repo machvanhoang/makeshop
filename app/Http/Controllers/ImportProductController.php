@@ -12,7 +12,7 @@ class ImportProductController extends Controller
         if ($request->getMethod() == 'POST') {
             ini_set('max_execution_time', 36000);
             try {
-                $import = (new ProductImport)->import($request->file_excel, null, \Maatwebsite\Excel\Excel::CSV);
+                $import = (new ProductImport)->import($request->file_excel, null, \Maatwebsite\Excel\Excel::XLSX);
                 return redirect()->route('import_product.index')->with('_alert_total', __('ユーザーが正常にインポートされました'));
             } catch (\Maatwebsite\Excel\Validators\ValidationException $e) {
                 $failures = $e->failures();
