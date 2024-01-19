@@ -15,7 +15,10 @@ class ProductRepository
         }]);
         $products->where('is_display', '!=', 'N');
         if ($keyword != '') {
-            $products->where('name', 'LIKE', '%' . $keyword . '%');
+            $products->where(function ($q) use($keyword) {
+                $q->where('name', 'LIKE', "%{$keyword}%")
+                    ->orWhere('price', $keyword);
+            });
         }
         if ($orderBy != 'NONE') {
             $products->orderBy('id', $orderBy);
