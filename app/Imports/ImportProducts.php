@@ -3,15 +3,16 @@
 namespace App\Imports;
 
 use App\Models\Products;
-use Maatwebsite\Excel\Concerns\ToModel;
-use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\Importable;
+use Maatwebsite\Excel\Concerns\ToModel;
+use Maatwebsite\Excel\Concerns\WithChunkReading;
+use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithValidation;
 use Maatwebsite\Excel\Imports\HeadingRowFormatter;
 
 HeadingRowFormatter::default('none');
 
-class ImportProducts implements ToModel, WithValidation, WithHeadingRow
+class ImportProducts implements ToModel, WithValidation, WithHeadingRow, WithChunkReading
 {
     use Importable;
     public function model(array $row)
@@ -19,7 +20,7 @@ class ImportProducts implements ToModel, WithValidation, WithHeadingRow
         $data = [];
         $data['breadcrumb'] = $row['カテゴリー'];
         $data['brand_code'] = str_replace(['="', '"'], "", $row['商品コード']);
-        $data['brand_code_format'] = (int)$data['brand_code'];
+        $data['brand_code_format'] = (int) $data['brand_code'];
         $data['ubrand_code'] = str_replace(['="', '"'], "", $row['独自商品コード']);
         $data['name'] = $row["商品名"];
         $data['price'] = !empty($row["販売価格"]) ? $row["販売価格"] : 0;
@@ -33,7 +34,7 @@ class ImportProducts implements ToModel, WithValidation, WithHeadingRow
         $data['image_small'] = $row["普通画像"];
         $data['is_display'] = $row["商品陳列可否"];
         $data['price_tax'] = $data['price'] + $data['price'] * 0.1;
-        $singleProduct =  Products::withTrashed()->whereBrandCode($data['brand_code'])->first();
+        $singleProduct = Products::withTrashed()->whereBrandCode($data['brand_code'])->first();
         if (empty($singleProduct)) {
             return Products::create($data);
         } else {
@@ -44,7 +45,7 @@ class ImportProducts implements ToModel, WithValidation, WithHeadingRow
     {
         $product->breadcrumb = $item['breadcrumb'];
         $product->brand_code = $item['brand_code'];
-        $product->brand_code_format = (int)$item['brand_code'];
+        $product->brand_code_format = (int) $item['brand_code'];
         $product->ubrand_code = $item['ubrand_code'];
         $product->name = $item['name'];
         $product->price = $item['price'];
@@ -71,5 +72,10 @@ class ImportProducts implements ToModel, WithValidation, WithHeadingRow
     public function headingRow(): int
     {
         return 1;
+    }
+
+    public function chunkSize(): int
+    {
+        return 1000;
     }
 }

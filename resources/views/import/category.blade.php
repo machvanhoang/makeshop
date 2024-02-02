@@ -15,9 +15,7 @@
                     <div class="col-sm-12">
                         <div class="alert  alert-danger alert-dismissible fade show" role="alert">
                             <ul class="p-0 m-0">
-                                @foreach (Session::get('_alert_failures') as $error)
-                                    行 {{ $error->row() }} は無効です。 ファイルをもう一度確認してください
-                                @endforeach
+                                {{ session('_alert_failures') }}
                             </ul>
                         </div>
                     </div>

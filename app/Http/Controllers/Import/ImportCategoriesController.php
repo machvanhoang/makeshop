@@ -3,21 +3,29 @@
 namespace App\Http\Controllers\Import;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Imports\ImportCategories;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 
 class ImportCategoriesController extends Controller
 {
+    /**
+     * Summary of index
+     *
+     * @param Request $request
+     * @return Factory|View|RedirectResponse
+     */
     public function index(Request $request)
     {
-        if ($request->getMethod() == 'POST') {
+        if ('POST' === $request->getMethod()) {
             try {
                 ini_set('max_execution_time', 36000);
                 (new ImportCategories)->import($request->file_excel, null, \Maatwebsite\Excel\Excel::XLSX);
                 return redirect()->route('import.category')->with('_alert_total', __('ユーザーが正常にインポートされました'));
-            } catch (\Maatwebsite\Excel\Validators\ValidationException $e) {
-                $failures = $e->failures();
-                return redirect()->route('import.index')->with('_alert_failures', $failures);
+            } catch (\Exception $e) {
+                return redirect()->route('import.category')->with('_alert_failures', $e->getMessage());
             }
         }
         return view('import.category');

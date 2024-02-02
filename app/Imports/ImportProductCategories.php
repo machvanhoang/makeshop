@@ -10,9 +10,11 @@ use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\WithValidation;
 use Maatwebsite\Excel\Imports\HeadingRowFormatter;
+use Maatwebsite\Excel\Concerns\WithChunkReading;
+
 
 HeadingRowFormatter::default('none');
-class ImportProductCategories implements ToModel, WithValidation, WithHeadingRow
+class ImportProductCategories implements ToModel, WithValidation, WithHeadingRow, WithChunkReading
 {
     use Importable;
     public function model(array $row)
@@ -45,5 +47,9 @@ class ImportProductCategories implements ToModel, WithValidation, WithHeadingRow
     public function headingRow(): int
     {
         return 1;
+    }
+    public function chunkSize(): int
+    {
+        return 1000;
     }
 }
