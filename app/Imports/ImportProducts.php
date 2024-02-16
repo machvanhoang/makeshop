@@ -56,6 +56,7 @@ class ImportProducts implements ToModel, WithValidation, WithHeadingRow, WithChu
         $product->origin = $item['origin'];
         $product->point = $item['point'];
         $product->stock = $item['stock'];
+        $product->image_big = $item['image_big'];
         $product->image_small = $item['image_small'];
         $product->is_display = $item['is_display'];
         $product->price_tax = $item['price'] + $item['price'] * 0.1;
