@@ -17,7 +17,7 @@ class ImportProductCategoriesController extends Controller
      *
      * @return Factory|View
      */
-    public function index(): Factory|View
+    public function index()
     {
         return view('import.product-category');
     }
@@ -28,11 +28,11 @@ class ImportProductCategoriesController extends Controller
      * @param Request $request
      * @return JsonResponse
      */
-    public function import(Request $request): JsonResponse
+    public function import(Request $request)
     {
         try {
             ini_set('max_execution_time', 720000);
-            Excel::import(new ImportProductCategories, $request->file('file_excel'));
+            Excel::import(new ImportProductCategories, $request->file('file_excel'), null, \Maatwebsite\Excel\Excel::XLSX);
 
             return response()->json([
                 'status' => true
