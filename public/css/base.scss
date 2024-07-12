@@ -51,25 +51,25 @@
 }
 
 /* Loader */
-//.loading-fixed {
-//    position: fixed;
-//    left: 0px;
-//    top: 0px;
-//    width: 100%;
-//    height: 100%;
-//    z-index: 99999;
-//    display: flex;
-//    justify-content: center;
-//    align-items: center;
-//    overflow: hidden;
-//    visibility: hidden;
-//    opacity: 0;
-//
-//    &.active {
-//        visibility: visible;
-//        opacity: 1;
-//    }
-//}
+.loading-fixed {
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    height: 100%;
+    z-index: 99999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    visibility: hidden;
+    opacity: 0;
+
+    &.active {
+        visibility: visible;
+        opacity: 1;
+    }
+}
 
 .loading-main {
     display: flex;
