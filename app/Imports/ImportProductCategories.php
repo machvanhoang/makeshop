@@ -5,51 +5,51 @@ namespace App\Imports;
 use App\Models\ProductCategories;
 use App\Models\Products;
 use App\Models\Categories;
-use Maatwebsite\Excel\Concerns\ToModel;
-use Maatwebsite\Excel\Concerns\WithHeadingRow;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\WithValidation;
-use Maatwebsite\Excel\Imports\HeadingRowFormatter;
-use Maatwebsite\Excel\Concerns\WithChunkReading;
 
 
-HeadingRowFormatter::default('none');
-class ImportProductCategories implements ToModel, WithValidation, WithHeadingRow, WithChunkReading
+class ImportProductCategories implements ToCollection, WithValidation
 {
     use Importable;
-    public function model(array $row)
+
+    public function collection(Collection $collection)
     {
         $data = [];
-        $data['category_code'] = $row['カテゴリー識別コード'];
-        $data['brand_code_format'] = (int)$row['システム商品コード'];
-        $singleProduct = Products::select('id')->whereBrandCodeFormat($data['brand_code_format'])->first();
-        $singleCategory = Categories::select('id')->whereCategoryCode($data['category_code'])->first();
-        if (!empty($singleProduct) && !empty($singleCategory)) {
-            $productCategory = ProductCategories::where([
-                'category_id'     => $singleCategory->id,
-                'product_id'    => $singleProduct->id,
-            ])->first();
-            if (empty($productCategory)) {
-                $productCategory =  ProductCategories::create([
-                    'category_code'    => $data['category_code'],
-                    'category_id'     => $singleCategory->id,
-                    'product_id'    => $singleProduct->id,
-                ]);
+        $dataImport = [];
+        foreach ($collection->forget(0) as $row) {
+            $data['category_code'] = $row[2];
+            $data['brand_code_format'] = $row[4];
+            $singleProduct = Products::select('id')->whereBrandCodeFormat($data['brand_code_format'])->first();
+            $singleCategory = Categories::select('id')->whereCategoryCode($data['category_code'])->first();
+
+            if (! empty($singleProduct) && ! empty($singleCategory)) {
+                $productCategory = ProductCategories::where([
+                    'category_id' => $singleCategory->id,
+                    'product_id' => $singleProduct->id,
+                ])->first();
+                if (empty($productCategory)) {
+                    $dataImport[] = [
+                        'category_code' => $data['category_code'],
+                        'category_id' => $singleCategory->id,
+                        'product_id' => $singleProduct->id,
+                        'created_at' => now(),
+                        'updated_at' => now(),
+                    ];
+                }
             }
         }
+
+        DB::table('product_categories')->insert($dataImport);
+
         return null;
     }
 
     public function rules(): array
     {
         return [];
-    }
-    public function headingRow(): int
-    {
-        return 1;
-    }
-    public function chunkSize(): int
-    {
-        return 1000;
     }
 }
