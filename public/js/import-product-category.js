@@ -38,11 +38,13 @@ $(document).ready(function() {
             } catch (error) {
                 break;
             }
+            updateProgressBar(i + 1, totalChunks);
         }
+
         $('.loading-fixed').removeClass('active');
         $('#file_excel').val('');
 
-        alert('データの追加が成功しました！');
+        alert('データの追加が成功しました');
     }
 
     function sendFile(url, formData, chunkNumber) {
@@ -68,5 +70,10 @@ $(document).ready(function() {
 
     function arrayToCSV(arrayData) {
         return arrayData.map(row => row.join(',')).join('\n');
+    }
+
+    function updateProgressBar(chunkNumber, totalChunks) {
+        let percentage = Math.round((chunkNumber / totalChunks) * 100);
+        $('.progress-bar-fill').css('width', percentage + '%');
     }
 });

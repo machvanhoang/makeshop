@@ -51,25 +51,25 @@
 }
 
 /* Loader */
-.loading-fixed {
-    position: fixed;
-    left: 0px;
-    top: 0px;
-    width: 100%;
-    height: 100%;
-    z-index: 99999;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
-    visibility: hidden;
-    opacity: 0;
-
-    &.active {
-        visibility: visible;
-        opacity: 1;
-    }
-}
+//.loading-fixed {
+//    position: fixed;
+//    left: 0px;
+//    top: 0px;
+//    width: 100%;
+//    height: 100%;
+//    z-index: 99999;
+//    display: flex;
+//    justify-content: center;
+//    align-items: center;
+//    overflow: hidden;
+//    visibility: hidden;
+//    opacity: 0;
+//
+//    &.active {
+//        visibility: visible;
+//        opacity: 1;
+//    }
+//}
 
 .loading-main {
     display: flex;
@@ -192,4 +192,36 @@
     padding: 0px 10px;
     position: relative;
     top: -1px;
+}
+
+.loading-fixed {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.8);
+    z-index: 9999;
+    justify-content: center;
+    align-items: center;
+}
+
+.loading-fixed.active {
+    display: flex;
+}
+
+.progress-bar {
+    width: 80%;
+    height: 30px;
+    background-color: #f3f3f3;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.progress-bar-fill {
+    height: 100%;
+    width: 0;
+    background-color: #4caf50;
+    transition: width 0.25s;
 }
