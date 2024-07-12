@@ -6,28 +6,41 @@ use App\Http\Controllers\Controller;
 use App\Imports\ImportProductCategories;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
-use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ImportProductCategoriesController extends Controller
 {
     /**
      * Summary of index
      *
-     * @param Request $request
-     * @return Factory|View|RedirectResponse
+     * @return Factory|View
      */
-    public function index(Request $request)
+    public function index(): Factory|View
     {
-        if ('POST' === $request->getMethod()) {
-            try {
-                ini_set('max_execution_time', 720000);
-                (new ImportProductCategories)->import($request->file_excel, null, \Maatwebsite\Excel\Excel::XLSX);
-                return redirect()->route('import.product-category')->with('_alert_total', __('ユーザーが正常にインポートされました'));
-            } catch (\Exception $e) {
-                return redirect()->route('import.product-category')->with('_alert_failures', $e->getMessage());
-            }
-        }
         return view('import.product-category');
+    }
+
+    /**
+     * Summary of import
+     *
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function import(Request $request): JsonResponse
+    {
+        try {
+            ini_set('max_execution_time', 720000);
+            Excel::import(new ImportProductCategories, $request->file('file_excel'));
+
+            return response()->json([
+                'status' => true
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => false
+            ]);
+        }
     }
 }

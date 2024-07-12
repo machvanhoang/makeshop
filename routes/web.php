@@ -62,5 +62,6 @@ Route::group(
         Route::match(['get', 'post'], '/product', [ImportProductController::class, 'index'])->name('product');
         Route::match(['get', 'post'], '/category', [ImportCategoriesController::class, 'index'])->name('category');
         Route::match(['get', 'post'], '/product-category', [ImportProductCategoriesController::class, 'index'])->name('product-category');
+        Route::post('/import-product-category', [ImportProductCategoriesController::class, 'import'])->name('product-category.post');
     }
 );
