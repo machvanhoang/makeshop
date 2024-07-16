@@ -22,10 +22,10 @@ class ImportProductController extends Controller
     {
         if ('POST' === $request->getMethod()) {
             try {
-            ini_set('max_execution_time', 36000);
-            Excel::import(new ImportProducts, $request->file('file_excel'), null, \Maatwebsite\Excel\Excel::XLSX);
+                set_time_limit(324000);
+                Excel::import(new ImportProducts, $request->file('file_excel'), null, \Maatwebsite\Excel\Excel::XLSX);
 
-            return redirect()->route('import.product')->with('_alert_total', __('ユーザーが正常にインポートされました'));
+                return redirect()->route('import.product')->with('_alert_total', __('ユーザーが正常にインポートされました'));
             } catch (\Exception $e) {
                 return redirect()->route('import.product')->with('_alert_failures', $e->getMessage());
             }
