@@ -621,7 +621,7 @@
                     return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
                 },
                 getImage(image = null) {
-                    return `https://makeshop-multi-images.akamaized.net/2448/itemimages/${image}`;
+                    return `${image}`;
                 },
                 getUrl(slug = null) {
                     return `https://www.shinanoya-wine.jp/view/item/${slug}`;

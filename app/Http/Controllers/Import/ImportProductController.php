@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Import;
 
-use App\Excels\Import\ProductImport;
 use App\Http\Controllers\Controller;
 use App\Imports\ImportProducts;
 use Illuminate\Contracts\View\Factory;

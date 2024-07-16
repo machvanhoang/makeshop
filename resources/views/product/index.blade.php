@@ -98,7 +98,7 @@
                                         </td>
                                         <td>
                                             <img width="50" height="50"
-                                                src="https://makeshop-multi-images.akamaized.net/2448/itemimages/{{ $product->image_big }}"
+                                                src="{{ $product->image_big }}"
                                                 alt="{{ $product->name }}" />
                                         </td>
                                         <td>

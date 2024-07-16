@@ -3,6 +3,7 @@
 namespace App\Imports;
 
 use App\Models\Products;
+use Illuminate\Support\Facades\Http;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
@@ -14,12 +15,13 @@ HeadingRowFormatter::default('none');
 
 class ImportProducts implements ToModel, WithValidation, WithHeadingRow, WithChunkReading
 {
+    const DEFAULT_STR_CODE = 1000000000000;
     use Importable;
     public function model(array $row)
     {
         $data = [];
-        $data['breadcrumb'] = $row['カテゴリー'];
-        $data['brand_code'] = str_replace(['="', '"'], "", $row['商品コード']);
+        $data['breadcrumb'] = $row['カテゴリーパス'];
+        $data['brand_code'] = substr((int)$row['システム商品コード'] + self::DEFAULT_STR_CODE, 1);
         $data['brand_code_format'] = (int) $data['brand_code'];
         $data['ubrand_code'] = str_replace(['="', '"'], "", $row['独自商品コード']);
         $data['name'] = $row["商品名"];
@@ -30,9 +32,9 @@ class ImportProducts implements ToModel, WithValidation, WithHeadingRow, WithChu
         $data['origin'] = $row["原産地"];
         $data['point'] = !empty($row["ポイント"]) ? $row["ポイント"] : 0;
         $data['stock'] = $row["数量"];
-        $data['image_big'] = $row["拡大画像"];
-        $data['image_small'] = $row["普通画像"];
-        $data['is_display'] = $row["商品陳列可否"];
+        $data['image_big'] = $this->getImage($row["商品ページURL"]);
+        $data['image_small'] = $data['image_big'];
+        $data['is_display'] = $row["商品表示可否"];
         $data['price_tax'] = $data['price'] + $data['price'] * 0.1;
         $singleProduct = Products::withTrashed()->whereBrandCode($data['brand_code'])->first();
         if (empty($singleProduct)) {
@@ -48,7 +50,6 @@ class ImportProducts implements ToModel, WithValidation, WithHeadingRow, WithChu
         $product->brand_code_format = (int) $item['brand_code'];
         $product->ubrand_code = $item['ubrand_code'];
         $product->name = $item['name'];
-        $product->price = $item['price'];
         $product->price_buy = $item['price_buy'];
         $product->weight = !empty($item['weight']) ? $item['weight'] : 0;
         $product->price = !empty($item['price']) ? $item['price'] : 0;
@@ -78,5 +79,27 @@ class ImportProducts implements ToModel, WithValidation, WithHeadingRow, WithChu
     public function chunkSize(): int
     {
         return 1000;
+    }
+
+    public function getImage($url)
+    {
+        $response = Http::get($url);
+        if ($response->successful()) {
+            $htmlContent = $response->body();
+            $dom = new \DOMDocument();
+            @$dom->loadHTML($htmlContent);
+
+            $xpath = new \DOMXPath($dom);
+
+            $imageNode = $xpath->query('//div[contains(@class, "imgwrap")]/img[contains(@class, "bigImg")]');
+
+            if ($imageNode->length > 0) {
+                return $imageNode->item(0)->getAttribute('src');
+            } else {
+                return null;
+            }
+        }
+
+        return null;
     }
 }
