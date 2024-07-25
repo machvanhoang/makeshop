@@ -78,7 +78,7 @@ class ImportProducts implements ToModel, WithValidation, WithHeadingRow, WithChu
 
     public function chunkSize(): int
     {
-        return 1000;
+        return 200;
     }
 
     public function getImage($url)

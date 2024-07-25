@@ -59,7 +59,8 @@ Route::group(
         'as' => 'import.'
     ],
     function () {
-        Route::match(['get', 'post'], '/product', [ImportProductController::class, 'index'])->name('product');
+        Route::get('/product', [ImportProductController::class, 'index'])->name('product');
+        Route::post('/product', [ImportProductController::class, 'import'])->name('product.post');
         Route::match(['get', 'post'], '/category', [ImportCategoriesController::class, 'index'])->name('category');
         Route::match(['get', 'post'], '/product-category', [ImportProductCategoriesController::class, 'index'])->name('product-category');
         Route::post('/import-product-category', [ImportProductCategoriesController::class, 'import'])->name('product-category.post');

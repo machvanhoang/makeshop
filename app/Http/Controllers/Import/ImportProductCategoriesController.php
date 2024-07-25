@@ -32,7 +32,7 @@ class ImportProductCategoriesController extends Controller
     {
         try {
             ini_set('max_execution_time', 720000);
-            Excel::import(new ImportProductCategories, $request->file('file_excel'), null, \Maatwebsite\Excel\Excel::XLSX);
+            Excel::import(new ImportProductCategories, $request->file('file_excel'),  null, \Maatwebsite\Excel\Excel::XLSX);
 
             return response()->json([
                 'status' => true
